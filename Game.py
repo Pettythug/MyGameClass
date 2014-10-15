@@ -6,25 +6,24 @@ from process import *
 pygame.init()
 
 SCREENWIDTH, SCREENHEIGHT = 800, 600
-screen = pygame.display.set_mode( (SCREENWIDTH, SCREENHEIGHT) )
+screen = pygame.display.set_mode( (SCREENWIDTH, SCREENHEIGHT),0,32 )
 clock = pygame.time.Clock() #object of Clock() class
-FPS = 60 # Frames Per Second
-img_goldfish = pygame.image.load("images/shark.png") #image to be loaded
+FPS = 24 # Frames Per Second
+total_frames = 0
+fish = Fish(0,SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
 
-fish = Fish(0,SCREENHEIGHT - 80, 201, 101,"images/shark.png")
-shark = Shark(40, 100, 200, 101, "images/shark.png")
 
 # -------------Main Program Loop-----------------------
 
 while True:
 
-    process(fish, FPS, total_frames)
+    process(fish,  FPS, total_frames)
 
 #LOGIC
 # Logic is movement, functions, etc
     fish.motion(SCREENWIDTH, SCREENHEIGHT)
     Shark.update_all(SCREENWIDTH, SCREENHEIGHT)
-    
+    total_frames += 1
 #LOGIC
 
 #DRAW
