@@ -33,8 +33,8 @@ def process(self, fish, FPS, total_frames):
 
 
 
-    spawn(self, FPS, total_frames)
-    collisions(self)
+    # spawn(self, FPS, total_frames)
+    # collisions(self)
 
 
 
@@ -43,7 +43,7 @@ def spawn(self, FPS, total_frames):
     img = Image.open(image_shark)
     # get the image's width and height in pixels
     width, height = img.size
-    sixty_seconds = FPS * 15  # spawns a new shark every sixty seconds
+    sixty_seconds = FPS * 10  # spawns a new shark every sixty seconds
 
     if total_frames % sixty_seconds == 0:
 
@@ -74,9 +74,15 @@ def collisions(self):
                 self.lives -= 1
                 classes.Fish.remove(fish)
                 classes.BaseClass.allsprites.remove(fish)
-                self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
+                classes.Shark.remove(sharks)
+                classes.BaseClass.allsprites.remove(sharks)
+                classes.Fish.destroy(fish)
+                classes.Shark.destroy(sharks)
+
                 if self.lives > 0:
+                    self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
+                else : self.state = classes.FISH_GAME_OVER
 
 
 

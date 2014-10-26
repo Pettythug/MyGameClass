@@ -37,15 +37,18 @@ class Game:
         while True:
             process(self, self.fish, self.FPS, self.total_frames)
             self.screen.fill((0, 0, 255))
+
+
             if self.state == FISH_PLAYING:
                 self.fish.motion(SCREENWIDTH, SCREENHEIGHT)
                 Shark.update_all(SCREENWIDTH, SCREENHEIGHT)
-                #self.handle_collisions()
-            elif self.state == FISH_IN_WATER:
+                spawn(self, self.FPS, self.total_frames)
+                collisions(self)
+            if self.state == FISH_IN_WATER:
                 show_message(self, "PRESS SPACE TO START")
-            elif self.state == FISH_GAME_OVER:
+            if self.state == FISH_GAME_OVER:
                 show_message(self, "GAME OVER. PRESS ENTER TO PLAY AGAIN")
-            elif self.state == FISH_WON:
+            if self.state == FISH_WON:
                 show_message(self, "YOU WON! PRESS ENTER TO PLAY AGAIN")
             # LOGIC
             # Logic is movement, functions, etc
