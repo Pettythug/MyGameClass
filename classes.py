@@ -22,7 +22,7 @@ class Game:
         self.FPS = 24  # Frames Per Second
         self.total_frames = 0
         self.fish = Fish(0, SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
-        self.volcano = Volcano(SCREENWIDTH, SCREENHEIGHT, "images\underwater_spout.png")
+        self.volcano = Volcano(SCREENWIDTH, SCREENHEIGHT, "images/underwater_spout.png")
 
         self.init_game()
 
