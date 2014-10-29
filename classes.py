@@ -38,8 +38,9 @@ class Game:
 
         while True:
             process(self, self.fish, self.FPS, self.total_frames)
-            self.screen.fill((0, 0, 255))
-
+            background = pygame.image.load("images/background.jpg")
+            screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
+            screen.blit(background, (0, 0))
 
             if self.state == FISH_PLAYING:
                 self.fish.motion(SCREENWIDTH, SCREENHEIGHT)
