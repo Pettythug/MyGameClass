@@ -14,10 +14,12 @@ def process(self, fish, FPS, total_frames):
         if keys[pygame.K_SPACE] and self.state == classes.FISH_IN_WATER:
             self.state = classes.FISH_PLAYING
 
-        elif keys[pygame.K_RIGHT]:
+        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            classes.Fish.going_right = True
             fish.image = pygame.image.load("images/cartoon-goldfish.png")
             fish.velx = 5
         elif keys[pygame.K_LEFT]:
+            classes.Fish.going_right = False
             fish.image = pygame.image.load("images/cartoon-goldfish-reverse.png")
             fish.velx = -5
         else:
@@ -30,11 +32,25 @@ def process(self, fish, FPS, total_frames):
         else:
             fish.vely = 0
 
+        if keys[pygame.K_x]:
+            def direction():
+                if classes.Fish.going_right:
+                    p.velx = 8
+                else:
+                    p.image = pygame.transform.flip(p.image, True, False)  # flips the image when shooting the other direction
+                    p.velx = -8
 
+            if classes.Fish.going_right:
+                p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, "images/green_pebble.png")
+                direction()
+            else:
+                p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, "images/green_pebble.png")
+                direction()
 
 
     # spawn(self, FPS, total_frames)
     # collisions(self)
+    classes.projectile_collisions()
 
 
 
@@ -75,9 +91,11 @@ def collisions(self):
                 classes.Fish.remove(fish)
                 classes.BaseClass.allsprites.remove(fish)
                 classes.Shark.remove(sharks)
-                classes.BaseClass.allsprites.remove(sharks)
+                for num in classes.Shark.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Shark.destroy(num)
                 classes.Fish.destroy(fish)
-                classes.Shark.destroy(sharks)
+
 
                 if self.lives > 0:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
@@ -86,24 +104,25 @@ def collisions(self):
 
 
 
-def handle_collisions(self):
-        for fish in classes.Fish.List:
-            for sharks in classes.Shark.List:
-                if self.fish.rect.colliderect(sharks.rect):
-                    self.lives -= 1
-                    classes.Fish.remove(fish)
-                    break
-            if self.lives > 0:
-                self.state = classes.FISH_IN_WATER
-            else:
-                self.state = classes.FISH_GAME_OVER
+def projectile_collisions():
 
-        if len(classes.Shark.List) == 0:
-            self.state = classes.FISH_WON
+    for enemies in classes.Shark.List:
+
+        projectiles = pygame.sprite.spritecollide(enemies, classes.FishProjectile.List, True) # when a player projectile collides with a enemy it returns the projectiles in the projectiles list
+
+        for projectile in projectiles:
 
 
+            enemies.health -= enemies.half_health
+            enemies.image = pygame.image.load("images/shark3.png") # regular snowball
+
+            if enemies.health == 0:
+                classes.BaseClass.allsprites.remove(enemies)
+                classes.Shark.destroy(enemies)
 
 
+            projectile.rect.x = 2 * -projectile.rect.width
+            projectile.destroy()
         # PROCESSING
 
 

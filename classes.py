@@ -2,6 +2,7 @@ from _ast import List
 import pygame, math, sys
 from random import randint
 from process import *
+from PIL import Image
 
 SCREENWIDTH, SCREENHEIGHT = 800, 600
 
@@ -21,6 +22,7 @@ class Game:
         self.FPS = 24  # Frames Per Second
         self.total_frames = 0
         self.fish = Fish(0, SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
+        self.volcano = Volcano(SCREENWIDTH, SCREENHEIGHT, "images\underwater_spout.png")
 
         self.init_game()
 
@@ -44,11 +46,17 @@ class Game:
                 Shark.update_all(SCREENWIDTH, SCREENHEIGHT)
                 spawn(self, self.FPS, self.total_frames)
                 collisions(self)
+                BaseClass.allsprites.draw(self.screen)
+                FishProjectile.List.draw(self.screen)
+                FishProjectile.movement()
+
+
             if self.state == FISH_IN_WATER:
                 show_message(self, "PRESS SPACE TO START")
             if self.state == FISH_GAME_OVER:
                 show_message(self, "GAME OVER. PRESS ENTER TO PLAY AGAIN")
             if self.state == FISH_WON:
+
                 show_message(self, "YOU WON! PRESS ENTER TO PLAY AGAIN")
             # LOGIC
             # Logic is movement, functions, etc
@@ -96,7 +104,7 @@ class BaseClass(pygame.sprite.Sprite):
 class Fish(BaseClass):
 
     List = pygame.sprite.Group()
-
+    going_right = True
     freeze = True
     lives = 3
 
@@ -147,7 +155,7 @@ class Shark(BaseClass):
             BaseClass.__init__(self, x, y, image_string)
             Shark.List.add(self)
             self.health = 100
-            self.half_health = self.health  # / 2.0 will make it so you have to hit the shark twice in order to kill it
+            self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
             self.velx, self.vely = randint(1, 4), 2
             self.amplitude, self.period = randint(20, 140), randint(4, 5)/100.0
 
@@ -184,6 +192,77 @@ class Shark(BaseClass):
         # Shark.normal_list.remove(self)
         del self
 
+
+class Volcano(BaseClass):
+
+    image_volcano = "images/underwater_spout.png"
+    img = Image.open(image_volcano)
+
+    List = pygame.sprite.Group()
+
+    def __init__(self, x, y, image_string):
+        img = Image.open(image_string)
+        width, height = img.size
+        BaseClass.__init__(self, x - width, y - height, image_string)
+        Volcano.List.add(self)
+
+
+    def volcano(self, SCREENWIDTH):
+        #Keeps the volcano from being dropped outside the screen
+        if self.rect.x + self.rect.width > SCREENWIDTH or self.rect.x < 0:
+            self.image = pygame.transform.flip(self.image, True, False)
+            self.velx = -self.velx
+
+        self.rect.x += self.velx
+
+
+class FishProjectile(pygame.sprite.Sprite):
+
+    List = pygame.sprite.Group()
+    normal_list = []
+    freeze = True
+
+    def __init__(self, x, y, going_right, image_string):
+
+        pygame.sprite.Sprite.__init__(self)
+        img = Image.open("images/cartoon-goldfish.png")
+        width, height = img.size
+
+        self.image = pygame.image.load(image_string)
+
+
+        self.rect = self.image.get_rect()
+        if going_right:
+            self.rect.x = x + width
+        else:
+            self.rect.x = x
+        self.rect.y = y + height / 2
+        self.width = width
+        self.height = height
+
+        try:
+            last_element = FishProjectile.normal_list[-1]
+            difference = abs(self.rect.x - last_element.rect.x)
+
+            if difference < self.width:
+                return
+
+        except Exception:
+            pass
+
+        FishProjectile.normal_list.append(self)
+        FishProjectile.List.add(self)
+        self.velx = None
+
+    @staticmethod
+    def movement():
+        for projectile in FishProjectile.List:
+            projectile.rect.x += projectile.velx
+
+    def destroy(self):
+        FishProjectile.List.remove(self)
+        FishProjectile.normal_list.remove(self)
+        del self
 
 def show_message(self, message):
     self.font = pygame.font.Font(None,30)
