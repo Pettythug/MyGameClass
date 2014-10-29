@@ -21,6 +21,7 @@ class Game:
         self.clock = pygame.time.Clock()  # object of Clock() class
         self.FPS = 24  # Frames Per Second
         self.total_frames = 0
+        self.background = pygame.image.load("images/background.jpg")
         self.fish = Fish(0, SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
         self.volcano = Volcano(SCREENWIDTH, SCREENHEIGHT, "images/underwater_spout.png")
 
@@ -38,9 +39,8 @@ class Game:
 
         while True:
             process(self, self.fish, self.FPS, self.total_frames)
-            background = pygame.image.load("images/background.jpg")
-            screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
-            screen.blit(background, (0, 0))
+            self.screen.blit(self.background, (0, 0))
+
 
             if self.state == FISH_PLAYING:
                 self.fish.motion(SCREENWIDTH, SCREENHEIGHT)
