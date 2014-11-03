@@ -11,7 +11,7 @@ def process(self, fish, FPS, total_frames):
             sys.exit()
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_SPACE] and self.state == classes.FISH_IN_WATER:
+        if keys[pygame.K_RETURN] and self.state == classes.FISH_IN_WATER:
             self.state = classes.FISH_PLAYING
 
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
@@ -32,7 +32,7 @@ def process(self, fish, FPS, total_frames):
         else:
             fish.vely = 0
 
-        if keys[pygame.K_x]:
+        if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[1] or pygame.mouse.get_pressed()[2]:
             def direction():
                 if classes.Fish.going_right:
                     p.velx = 8

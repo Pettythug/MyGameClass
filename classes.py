@@ -10,10 +10,11 @@ FISH_IN_WATER = 0
 FISH_PLAYING = 1
 FISH_WON = 2
 FISH_GAME_OVER = 3
+previous_x = [0]
+previous_y = 0
+
 
 class Game:
-
-
     def __init__(self):
 
         pygame.init()
@@ -27,7 +28,7 @@ class Game:
 
         self.init_game()
 
-# -------------Main Program Loop-----------------------
+    # -------------Main Program Loop-----------------------
 
     def init_game(self):
         self.lives = 3
@@ -40,10 +41,10 @@ class Game:
         while True:
             process(self, self.fish, self.FPS, self.total_frames)
             self.screen.blit(self.background, (0, 0))
-
+            position = pygame.mouse.get_pos()
 
             if self.state == FISH_PLAYING:
-                self.fish.motion(SCREENWIDTH, SCREENHEIGHT)
+                self.fish.motion(self.fish, SCREENWIDTH, SCREENHEIGHT)
                 Shark.update_all(SCREENWIDTH, SCREENHEIGHT)
                 spawn(self, self.FPS, self.total_frames)
                 collisions(self)
@@ -53,11 +54,10 @@ class Game:
 
 
             if self.state == FISH_IN_WATER:
-                show_message(self, "PRESS SPACE TO START")
+                show_message(self, "PRESS Enter TO START")
             if self.state == FISH_GAME_OVER:
                 show_message(self, "GAME OVER. PRESS ENTER TO PLAY AGAIN")
             if self.state == FISH_WON:
-
                 show_message(self, "YOU WON! PRESS ENTER TO PLAY AGAIN")
             # LOGIC
             # Logic is movement, functions, etc
@@ -65,7 +65,7 @@ class Game:
             self.total_frames += 1
             # LOGIC
 
-            #DRAW
+            # DRAW
 
 
             #screen.blit(img_goldfish, (100,100) ) # renders image on the screen at spot 100 X 100
@@ -77,11 +77,9 @@ class Game:
 
 
 class BaseClass(pygame.sprite.Sprite):
-
     allsprites = pygame.sprite.Group()
 
     def __init__(self, x, y, image_string):
-
         pygame.sprite.Sprite.__init__(self)
         BaseClass.allsprites.add(self)
 
@@ -92,18 +90,16 @@ class BaseClass(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-        #self.width = width
+        # self.width = width
         #self.height = height
 
     def destroy(self, ClassName):
-
         ClassName.List.remove(self)
         BaseClass.allsprites.remove(self)
         del self
 
 
 class Fish(BaseClass):
-
     List = pygame.sprite.Group()
     going_right = True
     freeze = True
@@ -118,24 +114,55 @@ class Fish(BaseClass):
         self.vely = 5
 
         self.health = 100
-        self.half_health = self.health/2.0  # will make it so you have to hit the shark twice in order to kill it
+        self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
 
-    def motion(self, SCREENWIDTH, SCREENHEIGHT):
+    def motion(self, fish, SCREENWIDTH, SCREENHEIGHT):
 
-        predicted_locationx = self.rect.x + self.velx
-        predicted_locationy = self.rect.y + self.vely
+        # predicted_locationx = self.rect.x + self.velx
+        # predicted_locationy = self.rect.y + self.vely
+        #
+        # if  predicted_locationx < 0:
+        # self.velx = 0
+        # elif predicted_locationx + self.rect.width > SCREENWIDTH:
+        #     self.velx = 0
+        # if predicted_locationy < 0:
+        #     self.vely = 0
+        # elif predicted_locationy + self.rect.height > SCREENHEIGHT:
+        #     self.vely = 0
+        #
+        # self.rect.x += self.velx
+        # self.rect.y += self.vely
 
-        if  predicted_locationx < 0:
-            self.velx = 0
-        elif predicted_locationx + self.rect.width > SCREENWIDTH:
-            self.velx = 0
-        if predicted_locationy < 0:
-            self.vely = 0
-        elif predicted_locationy + self.rect.height > SCREENHEIGHT:
-            self.vely = 0
+        img = Image.open("images/cartoon-goldfish.png")
+        width, height = img.size
 
-        self.rect.x += self.velx
-        self.rect.y += self.vely
+        pos = pygame.mouse.get_pos()
+        previous_x.append(pygame.mouse.get_rel()[0])
+
+        x = pos[0]
+        y = pos[1]
+
+        if previous_x[0] > 1:
+            fish.image = pygame.image.load("images/cartoon-goldfish.png")
+            print previous_x[0]
+            previous_x.pop(0)
+            Fish.going_right = True
+        elif previous_x[0] < -1:
+            fish.image = pygame.image.load("images/cartoon-goldfish-reverse.png")
+            previous_x.pop(0)
+            Fish.going_right = False
+        else:
+            previous_x.pop(0)
+
+        if y + height > 0 and y + height < SCREENHEIGHT:
+            self.rect.x = x - width / 2
+            self.rect.y = y - height / 2
+
+
+            # if y > height and x + width < SCREENWIDTH:
+            #     self.rect.x = x
+            #     self.rect.y = y - height
+
     def draw_fish(self):
         self.fish = Fish(0, SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
 
@@ -145,8 +172,8 @@ class Fish(BaseClass):
         # fish.normal_list.remove(self)
         del self
 
-class Shark(BaseClass):
 
+class Shark(BaseClass):
     List = pygame.sprite.Group()
 
 
@@ -158,25 +185,25 @@ class Shark(BaseClass):
             self.health = 100
             self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
             self.velx, self.vely = randint(1, 4), 2
-            self.amplitude, self.period = randint(20, 140), randint(4, 5)/100.0
+            self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
 
     @staticmethod
     def update_all(SCREENWIDTH, SCREENHEIGHT):
 
         for sharks in Shark.List:
 
-            if sharks.health <= 0: # if our shark is dead
-                if sharks.rect.y + sharks.rect.height < SCREENHEIGHT: # check to see if it is still above the bottom
-                    sharks.velx = 0 # if true it drops down
+            if sharks.health <= 0:  # if our shark is dead
+                if sharks.rect.y + sharks.rect.height < SCREENHEIGHT:  # check to see if it is still above the bottom
+                    sharks.velx = 0  # if true it drops down
             else:
-                sharks.sharks(SCREENWIDTH) # if false it continues to move.
+                sharks.sharks(SCREENWIDTH)  # if false it continues to move.
 
 
-            # if shark.health <= 0: #destorys the sharks if the health is less than or eaqual to zero
-            # 	shark.destroy(Shark)
+                # if shark.health <= 0: #destorys the sharks if the health is less than or eaqual to zero
+                # shark.destroy(Shark)
 
     def sharks(self, SCREENWIDTH):
-        #Keeps the sharks from being dropped outside the screen
+        # Keeps the sharks from being dropped outside the screen
         if self.rect.x + self.rect.width > SCREENWIDTH or self.rect.x < 0:
             self.image = pygame.transform.flip(self.image, True, False)
             self.velx = -self.velx
@@ -195,7 +222,6 @@ class Shark(BaseClass):
 
 
 class Volcano(BaseClass):
-
     image_volcano = "images/underwater_spout.png"
     img = Image.open(image_volcano)
 
@@ -209,7 +235,7 @@ class Volcano(BaseClass):
 
 
     def volcano(self, SCREENWIDTH):
-        #Keeps the volcano from being dropped outside the screen
+        # Keeps the volcano from being dropped outside the screen
         if self.rect.x + self.rect.width > SCREENWIDTH or self.rect.x < 0:
             self.image = pygame.transform.flip(self.image, True, False)
             self.velx = -self.velx
@@ -218,7 +244,6 @@ class Volcano(BaseClass):
 
 
 class FishProjectile(pygame.sprite.Sprite):
-
     List = pygame.sprite.Group()
     normal_list = []
     freeze = True
@@ -230,7 +255,6 @@ class FishProjectile(pygame.sprite.Sprite):
         width, height = img.size
 
         self.image = pygame.image.load(image_string)
-
 
         self.rect = self.image.get_rect()
         if going_right:
@@ -265,8 +289,9 @@ class FishProjectile(pygame.sprite.Sprite):
         FishProjectile.normal_list.remove(self)
         del self
 
+
 def show_message(self, message):
-    self.font = pygame.font.Font(None,30)
+    self.font = pygame.font.Font(None, 30)
     size = self.font.size(message)
     font_surface = self.font.render(message, False, (255, 255, 255))
     x = (SCREENWIDTH - size[0]) / 2
