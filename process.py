@@ -114,7 +114,7 @@ def projectile_collisions():
 
 
             enemies.health -= enemies.half_health
-            enemies.image = pygame.image.load("images/shark3.png") # regular snowball
+            enemies.image = pygame.image.load("images/shark3.png") # changed shark
 
             if enemies.health == 0:
                 classes.BaseClass.allsprites.remove(enemies)
