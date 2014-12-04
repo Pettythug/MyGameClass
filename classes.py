@@ -42,7 +42,7 @@ class Game:
             process(self, self.fish, self.FPS, self.total_frames)
             self.screen.blit(self.background, (0, 0))
             position = pygame.mouse.get_pos()
-            
+
 
             if self.state == FISH_PLAYING:
                 self.fish.motion(self.fish, SCREENWIDTH, SCREENHEIGHT)
@@ -54,12 +54,16 @@ class Game:
                 BaseClass.allsprites.draw(self.screen)
                 FishProjectile.List.draw(self.screen)
                 FishProjectile.movement()
+                self.score += 1
+
+                # print self.score
+                show_score(self, "%s" % (self.score/30))
 
 
             if self.state == FISH_IN_WATER:
                 show_message(self, "PRESS Enter TO START")
             if self.state == FISH_GAME_OVER:
-                show_message(self, "GAME OVER. PRESS ENTER TO PLAY AGAIN")
+                show_message(self, "GAME OVER. Your score is %s" % (self.score/30))
             if self.state == FISH_WON:
                 show_message(self, "YOU WON! PRESS ENTER TO PLAY AGAIN")
             # LOGIC
@@ -77,7 +81,6 @@ class Game:
             #DRAW
 
             self.clock.tick(self.FPS)
-
 
 class BaseClass(pygame.sprite.Sprite):
     allsprites = pygame.sprite.Group()
@@ -147,7 +150,7 @@ class Fish(BaseClass):
 
         if previous_x[0] > 1:
             fish.image = pygame.image.load("images/cartoon-goldfish.png")
-            print previous_x[0]
+            # print previous_x[0]
             previous_x.pop(0)
             Fish.going_right = True
         elif previous_x[0] < -1:
@@ -347,6 +350,14 @@ def show_message(self, message):
     font_surface = self.font.render(message, False, (255, 255, 255))
     x = (SCREENWIDTH - size[0]) / 2
     y = (SCREENHEIGHT - size[1]) / 2
+    self.screen.blit(font_surface, (x, y))
+
+def show_score(self, message):
+    self.font = pygame.font.Font(None, 100)
+    size = self.font.size(message)
+    font_surface = self.font.render(message, False, (255, 255, 255))
+    x = 5
+    y = 5
     self.screen.blit(font_surface, (x, y))
 
 
