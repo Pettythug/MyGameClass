@@ -59,22 +59,27 @@ def spawn(self, FPS, total_frames):
     img = Image.open(image_shark)
     # get the image's width and height in pixels
     width, height = img.size
-    sixty_seconds = FPS * 10  # spawns a new shark every sixty seconds
+    sixty_seconds = FPS * 5  # spawns a new shark every 4 seconds
 
     if total_frames % sixty_seconds == 0:
 
-
         r = random.randint(1, 3)
-        x = 1
         y = 1
         if r == 2:
-            x = 800 - 200
             y = 600 - height
         elif r == 3:
-            x = 0
             y = 600 / 2 - height / 2
-        classes.Shark(x, y, image_shark)
+        classes.Shark(0, y, image_shark)
 
+    image_jelly = "images/jelly.png"
+    img = Image.open(image_jelly)
+    # get the image's width and height in pixels
+    width, height = img.size
+
+    if total_frames % (FPS * 2.5)  == 0:
+
+        y = random.randint(1, 450)
+        classes.Jellyfish(0, y, image_jelly)
 
 def collisions(self):
     #  Freeze sharks
@@ -102,7 +107,31 @@ def collisions(self):
                     self.state = classes.FISH_IN_WATER
                 else : self.state = classes.FISH_GAME_OVER
 
+def jelly_collisions(self):
+    #  Freeze jellyfishes
+    #  widthpx projectiles
 
+    for fish in classes.Fish.List:
+
+        for jellyfishes in classes.Jellyfish.List:
+
+            col = fish.rect.colliderect(jellyfishes.rect)
+
+            if col:
+                self.lives -= 1
+                classes.Fish.remove(fish)
+                classes.BaseClass.allsprites.remove(fish)
+                classes.Jellyfish.remove(jellyfishes)
+                for num in classes.Jellyfish.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Jellyfish.destroy(num)
+                classes.Fish.destroy(fish)
+
+
+                if self.lives > 0:
+                    self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
+                    self.state = classes.FISH_IN_WATER
+                else : self.state = classes.FISH_GAME_OVER
 
 def projectile_collisions():
 
