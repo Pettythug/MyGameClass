@@ -231,7 +231,7 @@ class Jellyfish(BaseClass):
 
     def __init__(self, x, y, image_string):
 
-        if len(Jellyfish.List) < 6:
+        if len(Jellyfish.List) < 15:
             BaseClass.__init__(self, x, y, image_string)
             Jellyfish.List.add(self)
             self.health = 100

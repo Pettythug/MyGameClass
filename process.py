@@ -71,15 +71,30 @@ def spawn(self, FPS, total_frames):
             y = 600 / 2 - height / 2
         classes.Shark(0, y, image_shark)
 
-    image_jelly = "images/jelly.png"
+
+    r = random.randint(1, 3)
+    if r == 1: 
+        image_jelly = "images/bag.png"
+    elif r == 2:
+        image_jelly = "images/jelly.png"
+    elif r == 3:
+        image_jelly = "images/can.png"
     img = Image.open(image_jelly)
-    # get the image's width and height in pixels
-    width, height = img.size
 
     if total_frames % (FPS * 2.5)  == 0:
 
-        y = random.randint(1, 450)
-        classes.Jellyfish(0, y, image_jelly)
+        r = random.randint(1, 3)
+        if r == 1: 
+            x = random.randint(1, 450)
+            y = 0
+            self.velx, self.vely = 0,0
+        elif r == 2:
+            x = 0
+            y = random.randint(1, 450)
+        elif r == 3:
+            x = 0
+            y = random.randint(1, 200)
+        classes.Jellyfish(x, y, image_jelly)
 
 def collisions(self):
     #  Freeze sharks
