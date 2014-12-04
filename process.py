@@ -50,7 +50,7 @@ def process(self, fish, FPS, total_frames):
 
     # spawn(self, FPS, total_frames)
     # collisions(self)
-    classes.projectile_collisions()
+    classes.projectile_collisions(self)
 
 
 
@@ -71,30 +71,29 @@ def spawn(self, FPS, total_frames):
             y = 600 / 2 - height / 2
         classes.Shark(0, y, image_shark)
 
-
-    r = random.randint(1, 3)
-    if r == 1: 
-        image_jelly = "images/bag.png"
-    elif r == 2:
-        image_jelly = "images/jelly.png"
-    elif r == 3:
-        image_jelly = "images/can.png"
-    img = Image.open(image_jelly)
-
     if total_frames % (FPS * 2.5)  == 0:
-
         r = random.randint(1, 3)
+        x = 0
+        y = 1
         if r == 1: 
+            image_jelly = "images/bag.png"
+            img = Image.open(image_jelly)
             x = random.randint(1, 450)
-            y = 0
-            self.velx, self.vely = 0,0
+            y = random.randint(0, 25) * -1
+            classes.Jellyfish(x, y, image_jelly)
         elif r == 2:
+            image_jelly = "images/jelly.png"
+            img = Image.open(image_jelly)
             x = 0
             y = random.randint(1, 450)
+            classes.Jellyfish(x, y, image_jelly)
         elif r == 3:
+            image_jelly = "images/can.png"
+            img = Image.open(image_jelly)
             x = 0
             y = random.randint(1, 200)
-        classes.Jellyfish(x, y, image_jelly)
+            classes.Jellyfish(x, y, image_jelly)
+        
 
 def collisions(self):
     #  Freeze sharks
@@ -148,9 +147,31 @@ def jelly_collisions(self):
                     self.state = classes.FISH_IN_WATER
                 else : self.state = classes.FISH_GAME_OVER
 
-def projectile_collisions():
+def projectile_collisions(self):
 
     for enemies in classes.Shark.List:
+
+        projectiles = pygame.sprite.spritecollide(enemies, classes.FishProjectile.List, True) # when a player projectile collides with a enemy it returns the projectiles in the projectiles list
+
+        for projectile in projectiles:
+
+            enemies.health -= enemies.half_health
+            enemies.image = pygame.image.load("images/shark3.png") # changed shark
+
+            if self.flip_count % 2 == 1:
+                enemies.image = pygame.transform.flip(enemies.image, True, False)
+
+            if enemies.health == 0:
+                classes.BaseClass.allsprites.remove(enemies)
+                classes.Shark.destroy(enemies)
+
+
+            projectile.rect.x = 2 * -projectile.rect.width
+            projectile.destroy()
+        # PROCESSING
+def projectile_jelly_collisions():
+
+    for enemies in classes.Jellyfish.List:
 
         projectiles = pygame.sprite.spritecollide(enemies, classes.FishProjectile.List, True) # when a player projectile collides with a enemy it returns the projectiles in the projectiles list
 
@@ -162,12 +183,14 @@ def projectile_collisions():
 
             if enemies.health == 0:
                 classes.BaseClass.allsprites.remove(enemies)
-                classes.Shark.destroy(enemies)
+                classes.Jellyfish.destroy(enemies)
 
 
             projectile.rect.x = 2 * -projectile.rect.width
             projectile.destroy()
         # PROCESSING
+
+
 
 
 

@@ -34,6 +34,7 @@ class Game:
         self.lives = 3
         self.score = 0
         self.state = FISH_IN_WATER
+        self.flip_count = 0
 
 
     def run(self):
@@ -180,8 +181,7 @@ class Fish(BaseClass):
 
 
 class Shark(BaseClass):
-    List = pygame.sprite.Group()
-
+    List = pygame.sprite.Group()            
 
     def __init__(self, x, y, image_string):
 
@@ -190,8 +190,10 @@ class Shark(BaseClass):
             Shark.List.add(self)
             self.health = 100
             self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
-            self.velx, self.vely = randint(1, 4), 2
+            self.velx, self.vely = randint(5, 30), 200
             self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
+            self.flip_count = 0
+            
 
     @staticmethod
     def update_all(SCREENWIDTH, SCREENHEIGHT):
@@ -213,13 +215,12 @@ class Shark(BaseClass):
         if self.rect.x + self.rect.width > SCREENWIDTH or self.rect.x < 0:
             self.image = pygame.transform.flip(self.image, True, False)
             self.velx = -self.velx
+            self.flip_count += 1
 
         self.rect.x += self.velx
 
         #Sin couve is -- (a * sin( bx + c ) + y)
-
         #self.rect.y = self.amplitude * math.sin(self.period * self.rect.x) + 140
-
 
     def destroy(self):
         Shark.List.remove(self)
@@ -231,7 +232,7 @@ class Jellyfish(BaseClass):
 
     def __init__(self, x, y, image_string):
 
-        if len(Jellyfish.List) < 15:
+        if len(Jellyfish.List) < 10:
             BaseClass.__init__(self, x, y, image_string)
             Jellyfish.List.add(self)
             self.health = 100
