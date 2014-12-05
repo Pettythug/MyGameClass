@@ -48,10 +48,11 @@ class Game:
             if self.state == FISH_PLAYING:
                 self.fish.motion(self.fish, SCREENWIDTH, SCREENHEIGHT)
                 Shark.update_all(SCREENWIDTH, SCREENHEIGHT)
+                Bag.update_all(SCREENWIDTH, SCREENHEIGHT)
                 Jellyfish.update_all(SCREENWIDTH, SCREENHEIGHT)
                 spawn(self, self.FPS, self.total_frames)
                 collisions(self)
-                jelly_collisions(self)
+                # jelly_collisions(self)
                 BaseClass.allsprites.draw(self.screen)
                 FishProjectile.List.draw(self.screen)
                 FishProjectile.movement()
@@ -185,12 +186,12 @@ class Shark(BaseClass):
 
     def __init__(self, x, y, image_string):
 
-        if len(Shark.List) < 6:
+        if len(Shark.List) < 3:
             BaseClass.__init__(self, x, y, image_string)
             Shark.List.add(self)
             self.health = 100
             self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
-            self.velx, self.vely = randint(5, 30), 200
+            self.velx, self.vely = randint(3, 10), 200
             self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
             self.flip_count = 0
             
@@ -204,13 +205,13 @@ class Shark(BaseClass):
                 if sharks.rect.y + sharks.rect.height < SCREENHEIGHT:  # check to see if it is still above the bottom
                     sharks.velx = 0  # if true it drops down
             else:
-                sharks.sharks(SCREENWIDTH)  # if false it continues to move.
+                sharks.sharks(SCREENWIDTH, SCREENHEIGHT)  # if false it continues to move.
 
 
                 # if shark.health <= 0: #destorys the sharks if the health is less than or eaqual to zero
                 # shark.destroy(Shark)
 
-    def sharks(self, SCREENWIDTH):
+    def sharks(self, SCREENWIDTH, SCREENHEIGHT):
         # Keeps the sharks from being dropped outside the screen
         if self.rect.x + self.rect.width > SCREENWIDTH or self.rect.x < 0:
             self.image = pygame.transform.flip(self.image, True, False)
@@ -232,12 +233,12 @@ class Jellyfish(BaseClass):
 
     def __init__(self, x, y, image_string):
 
-        if len(Jellyfish.List) < 10:
+        if len(Jellyfish.List) < 8:
             BaseClass.__init__(self, x, y, image_string)
             Jellyfish.List.add(self)
             self.health = 100
             self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
-            self.velx, self.vely = randint(1, 4), randint(1, 4)
+            self.velx, self.vely = randint(2, 3), randint(2, 4)
             self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
 
     @staticmethod
@@ -249,19 +250,32 @@ class Jellyfish(BaseClass):
                 if jellyfishes.rect.y + jellyfishes.rect.height < SCREENHEIGHT:  # check to see if it is still above the bottom
                     jellyfishes.velx = 0  # if true it drops down
             else:
-                jellyfishes.jellyfishes(SCREENWIDTH)  # if false it continues to move.
+                jellyfishes.jellyfishes(SCREENWIDTH, SCREENHEIGHT)  # if false it continues to move.
 
 
                 # if shark.health <= 0: #destorys the sharks if the health is less than or eaqual to zero
                 # shark.destroy(Shark)
 
-    def jellyfishes(self, SCREENWIDTH):
+    def jellyfishes(self, SCREENWIDTH, SCREENHEIGHT):
         # Keeps the jellies from being dropped outside the screen
-        if self.rect.x + self.rect.width > SCREENWIDTH or self.rect.x < 0:
-            self.image = pygame.transform.flip(self.image, True, False)
+        if self.rect.x > 800: # if outside the right walls
             self.velx = -self.velx
-
-        self.rect.x += self.velx
+            self.destroy()
+            classes.BaseClass.allsprites.remove(self)
+        elif self.rect.x < 0: # if outside the left walls
+            self.velx = -self.velx
+            self.destroy()
+            classes.BaseClass.allsprites.remove(self)
+        else:
+            if self.rect.y + self.rect.height > SCREENHEIGHT:# if outside the bottom wall
+                self.vely = -self.vely
+            if self.rect.y - self.rect.height < 0: # if outside the top wall
+                self.vely = -self.vely
+            self.rect.x += self.velx
+            if random.randint(1, 2) == 1:
+                self.rect.y += .5
+            else:
+                self.rect.y -= .75
 
         #Sin couve is -- (a * sin( bx + c ) + y)
 
@@ -270,11 +284,52 @@ class Jellyfish(BaseClass):
 
     def destroy(self):
         Jellyfish.List.remove(self)
-        # Shark.normal_list.remove(self)
+        # Jellyfish.normal_list.remove(self)
         del self
 
 
+class Bag(BaseClass):
+    List = pygame.sprite.Group()
 
+    def __init__(self, x, y, image_string):
+
+        if len(Bag.List) < 4:
+            BaseClass.__init__(self, x, y, image_string)
+            Bag.List.add(self)
+            self.health = 100
+            self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
+            self.velx, self.vely = randint(1, 4), randint(1, 4)
+            self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
+
+    @staticmethod
+    def update_all(SCREENWIDTH, SCREENHEIGHT):
+
+        for bags in Bag.List:
+
+            if bags.health <= 0:  # if our shark is dead
+                if bags.rect.y + bags.rect.height < SCREENHEIGHT:  # check to see if it is still above the bottom
+                    bags.velx = 0  # if true it drops down
+            else:
+                bags.bags(SCREENWIDTH, SCREENHEIGHT)  # if false it continues to move.
+
+
+                # if shark.health <= 0: #destorys the sharks if the health is less than or eaqual to zero
+                # shark.destroy(Shark)
+
+    def bags(self, SCREENWIDTH, SCREENHEIGHT):
+        # Keeps the jellies from being dropped outside the screen
+        if self.rect.y + self.rect.height >= SCREENHEIGHT: # if above top wall
+            self.rect.x += self.velx
+            if self.rect.y + self.rect.height > SCREENHEIGHT or self.rect.y + self.rect.height < 0: # if outside the bottom wall
+                self.destroy()
+                classes.BaseClass.allsprites.remove(self)
+        else:
+            self.rect.y -= self.vely
+
+    def destroy(self):
+        Bag.List.remove(self)
+        # Shark.normal_list.remove(self)
+        del self
 
 class Volcano(BaseClass):
     image_volcano = "images/underwater_spout.png"
