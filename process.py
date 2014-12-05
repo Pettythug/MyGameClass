@@ -1,6 +1,7 @@
 import pygame, sys, classes, random
 from PIL import Image
 import Game
+from random import randint
 
 
 def process(self, fish, FPS, total_frames):
@@ -41,60 +42,91 @@ def process(self, fish, FPS, total_frames):
                     p.velx = -8
 
             if classes.Fish.going_right:
-                p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, "images/green_pebble.png")
+                r = random.randint(0,4)
+                if r == 1:
+                    pebble_img = "images/pebble1.png"
+                elif r == 2:
+                    pebble_img = "images/pebble2.png"
+                elif r == 3:
+                    pebble_img = "images/pebble3.png"
+                elif r== 4:
+                    pebble_img = "images/pebble4.png"
+                else:
+                    pebble_img = "images/pebble.png"
+                p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
                 direction()
             else:
-                p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, "images/green_pebble.png")
+                r = random.randint(0,4)
+                if r == 1:
+                    pebble_img = "images/pebble1.png"
+                elif r == 2:
+                    pebble_img = "images/pebble2.png"
+                elif r == 3:
+                    pebble_img = "images/pebble3.png"
+                elif r== 4:
+                    pebble_img = "images/pebble4.png"
+                else:
+                    pebble_img = "images/pebble.png"
+                p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
                 direction()
 
 
     # spawn(self, FPS, total_frames)
     # collisions(self)
-    classes.projectile_collisions()
+    classes.projectile_collisions(self)
 
 
 
 def spawn(self, FPS, total_frames):
-    image_shark = "images/shark2.png"
-    img = Image.open(image_shark)
-    # get the image's width and height in pixels
-    width, height = img.size
-    sixty_seconds = FPS * 5  # spawns a new shark every 4 seconds
-
-    if total_frames % sixty_seconds == 0:
-
+    if total_frames % (FPS * 5) == 0:  # spawns a new shark every 4 seconds
+        image_shark = "images/shark2.png"
+        img = Image.open(image_shark)
         r = random.randint(1, 3)
         y = 1
         if r == 2:
-            y = 600 - height
+            y = 600 - 150
         elif r == 3:
-            y = 600 / 2 - height / 2
+            y = 600 / 2 - 150 / 2
         classes.Shark(0, y, image_shark)
 
+    if total_frames % (FPS * 2.5) == 0:  # spawns a new jelly every 2 seconds
 
-    r = random.randint(1, 3)
-    if r == 1: 
-        image_jelly = "images/bag.png"
-    elif r == 2:
-        image_jelly = "images/jelly.png"
-    elif r == 3:
-        image_jelly = "images/can.png"
-    img = Image.open(image_jelly)
+        image_bag = "images/jelly.png"
+        img = Image.open(image_bag)
+        if random.randint(1, 2) == 1:
+            x = 0
+        else:
+            x = 800
+        y = random.randint(100, 450)
+        classes.Jellyfish(x, y, image_bag)
 
-    if total_frames % (FPS * 2.5)  == 0:
 
+    if total_frames % (FPS * 7.5)  == 0:  # spawns a new bag every 8 seconds
         r = random.randint(1, 3)
+        x = 0
+        y = 1
         if r == 1: 
-            x = random.randint(1, 450)
-            y = 0
-            self.velx, self.vely = 0,0
+            if random.randint(1, 2) == 1:
+                image_bag = "images/bag.png"
+            else:
+                image_bag = "images/trashbag.png"
+            img = Image.open(image_bag)
+            y = random.randint(1, 150)
+            x = random.randint(0, 25)
+            classes.Bag(x, y, image_bag)
         elif r == 2:
-            x = 0
-            y = random.randint(1, 450)
+            image_bag = "images/can.png"
+            y = random.randint(1, 150)
+            x = random.randint(0, 25)
+            classes.Bag(x, y, image_bag)
         elif r == 3:
-            x = 0
-            y = random.randint(1, 200)
-        classes.Jellyfish(x, y, image_jelly)
+            image_bag = "images/can.png"
+            img = Image.open(image_bag)
+            y = 0
+            x = random.randint(1, 200)
+            classes.Bag(x, y, image_bag)
+    
+        
 
 def collisions(self):
     #  Freeze sharks
@@ -122,12 +154,6 @@ def collisions(self):
                     self.state = classes.FISH_IN_WATER
                 else : self.state = classes.FISH_GAME_OVER
 
-def jelly_collisions(self):
-    #  Freeze jellyfishes
-    #  widthpx projectiles
-
-    for fish in classes.Fish.List:
-
         for jellyfishes in classes.Jellyfish.List:
 
             col = fish.rect.colliderect(jellyfishes.rect)
@@ -142,13 +168,31 @@ def jelly_collisions(self):
                         classes.Jellyfish.destroy(num)
                 classes.Fish.destroy(fish)
 
+                if self.lives > 0:
+                    self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
+                    self.state = classes.FISH_IN_WATER
+                else : self.state = classes.FISH_GAME_OVER
+
+        for bags in classes.Bag.List:
+
+            col = fish.rect.colliderect(bags.rect)
+
+            if col:
+                self.lives -= 1
+                classes.Fish.remove(fish)
+                classes.BaseClass.allsprites.remove(fish)
+                classes.Bag.remove(bags)
+                for num in classes.Bag.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Bag.destroy(num)
+                classes.Fish.destroy(fish)
 
                 if self.lives > 0:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
                 else : self.state = classes.FISH_GAME_OVER
 
-def projectile_collisions():
+def projectile_collisions(self):
 
     for enemies in classes.Shark.List:
 
@@ -156,19 +200,39 @@ def projectile_collisions():
 
         for projectile in projectiles:
 
-
             enemies.health -= enemies.half_health
             enemies.image = pygame.image.load("images/shark3.png") # changed shark
 
+            if enemies.flip_count % 2 == 1:
+                enemies.image = pygame.transform.flip(enemies.image, True, False)
+
             if enemies.health == 0:
+                self.font = pygame.font.Font(None, 300)
+                size = self.font.size("2 POINTS")
+                font_surface = self.font.render("2 POINTS", False, (255, 255, 255))
+                self.screen.blit(font_surface, (enemies.rect.x, enemies.rect.y))
                 classes.BaseClass.allsprites.remove(enemies)
                 classes.Shark.destroy(enemies)
 
+            projectile.rect.x = 2 * -projectile.rect.width
+            projectile.destroy()
+
+    for enemies in classes.Jellyfish.List:
+
+        projectiles = pygame.sprite.spritecollide(enemies, classes.FishProjectile.List, True) # when a player projectile collides with a enemy it returns the projectiles in the projectiles list
+
+        for projectile in projectiles:
+
+            enemies.health -= enemies.half_health
+            enemies.image = pygame.image.load("images/jelly2.png") # changed shark
+
+            if enemies.health == 0:
+                classes.BaseClass.allsprites.remove(enemies)
+                classes.Jellyfish.destroy(enemies)
 
             projectile.rect.x = 2 * -projectile.rect.width
             projectile.destroy()
         # PROCESSING
-
 
 
 
