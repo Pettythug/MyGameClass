@@ -173,6 +173,25 @@ def collisions(self):
                     self.state = classes.FISH_IN_WATER
                 else : self.state = classes.FISH_GAME_OVER
 
+        for bags in classes.Bag.List:
+
+            col = fish.rect.colliderect(bags.rect)
+
+            if col:
+                self.lives -= 1
+                classes.Fish.remove(fish)
+                classes.BaseClass.allsprites.remove(fish)
+                classes.Bag.remove(bags)
+                for num in classes.Bag.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Bag.destroy(num)
+                classes.Fish.destroy(fish)
+
+                if self.lives > 0:
+                    self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
+                    self.state = classes.FISH_IN_WATER
+                else : self.state = classes.FISH_GAME_OVER
+
 def projectile_collisions(self):
 
     for enemies in classes.Shark.List:
@@ -188,6 +207,10 @@ def projectile_collisions(self):
                 enemies.image = pygame.transform.flip(enemies.image, True, False)
 
             if enemies.health == 0:
+                self.font = pygame.font.Font(None, 300)
+                size = self.font.size("2 POINTS")
+                font_surface = self.font.render("2 POINTS", False, (255, 255, 255))
+                self.screen.blit(font_surface, (enemies.rect.x, enemies.rect.y))
                 classes.BaseClass.allsprites.remove(enemies)
                 classes.Shark.destroy(enemies)
 
@@ -210,9 +233,6 @@ def projectile_collisions(self):
             projectile.rect.x = 2 * -projectile.rect.width
             projectile.destroy()
         # PROCESSING
-
-
-
 
 
 

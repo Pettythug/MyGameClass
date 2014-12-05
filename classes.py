@@ -24,7 +24,7 @@ class Game:
         self.total_frames = 0
         self.background = pygame.image.load("images/background.jpg")
         self.fish = Fish(0, SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
-        self.volcano = Volcano(SCREENWIDTH, SCREENHEIGHT, "images/underwater_spout.png")
+        # self.volcano = Volcano(SCREENWIDTH, SCREENHEIGHT, "images/underwater_spout.png")
 
         self.init_game()
 
@@ -298,8 +298,9 @@ class Bag(BaseClass):
             Bag.List.add(self)
             self.health = 100
             self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
-            self.velx, self.vely = randint(1, 4), randint(1, 4)
+            self.velx, self.vely = randint(1, 2), randint(1, 2)
             self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
+            self.direction = 0
 
     @staticmethod
     def update_all(SCREENWIDTH, SCREENHEIGHT):
@@ -318,8 +319,13 @@ class Bag(BaseClass):
 
     def bags(self, SCREENWIDTH, SCREENHEIGHT):
         # Keeps the jellies from being dropped outside the screen
-        if self.rect.y + self.rect.height >= SCREENHEIGHT: # if above top wall
-            self.rect.x += self.velx
+        if self.rect.y + self.rect.height > 0: # if above top wall
+            if self.direction == 0:
+                if random.randint(0,1) ==1:
+                    self.direction = 1
+                else:
+                    self.direction = -1
+            self.rect.x += self.velx * self.direction
             if self.rect.y + self.rect.height > SCREENHEIGHT or self.rect.y + self.rect.height < 0: # if outside the bottom wall
                 self.destroy()
                 classes.BaseClass.allsprites.remove(self)
@@ -412,9 +418,14 @@ def show_score(self, message):
     self.font = pygame.font.Font(None, 100)
     size = self.font.size(message)
     font_surface = self.font.render(message, False, (255, 255, 255))
-    x = 5
-    y = 5
+    x = 15
+    y = 15
     self.screen.blit(font_surface, (x, y))
+    i = 1
+    while i < self.lives+1:
+        self.screen.blit(pygame.image.load("images/lives.png"), (i * 50 + 100, y))
+        i += 1
+
 
 
 
