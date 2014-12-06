@@ -69,7 +69,8 @@ def process(self, fish, FPS, total_frames):
                     pebble_img = "images/pebble.png"
                 p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
                 direction()
-
+            pygame.mixer.music.load('music/fire.ogg')
+            pygame.mixer.music.play(0)
 
     # spawn(self, FPS, total_frames)
     # collisions(self)
@@ -139,6 +140,8 @@ def collisions(self):
             col = fish.rect.colliderect(sharks.rect)
 
             if col:
+                pygame.mixer.music.load('music/buzzer.ogg')
+                pygame.mixer.music.play(0)
                 self.lives -= 1
                 classes.Fish.remove(fish)
                 classes.BaseClass.allsprites.remove(fish)
@@ -159,6 +162,8 @@ def collisions(self):
             col = fish.rect.colliderect(jellyfishes.rect)
 
             if col:
+                pygame.mixer.music.load('music/buzzer.ogg')
+                pygame.mixer.music.play(0)
                 self.lives -= 1
                 classes.Fish.remove(fish)
                 classes.BaseClass.allsprites.remove(fish)
@@ -178,6 +183,8 @@ def collisions(self):
             col = fish.rect.colliderect(bags.rect)
 
             if col:
+                pygame.mixer.music.load('music/buzzer.ogg')
+                pygame.mixer.music.play(0)
                 self.lives -= 1
                 classes.Fish.remove(fish)
                 classes.BaseClass.allsprites.remove(fish)
@@ -207,10 +214,12 @@ def projectile_collisions(self):
                 enemies.image = pygame.transform.flip(enemies.image, True, False)
 
             if enemies.health == 0:
-                self.font = pygame.font.Font(None, 300)
-                size = self.font.size("2 POINTS")
-                font_surface = self.font.render("2 POINTS", False, (255, 255, 255))
-                self.screen.blit(font_surface, (enemies.rect.x, enemies.rect.y))
+                pygame.mixer.music.load('music/trumpet.ogg')
+                pygame.mixer.music.play(0)
+                # self.font = pygame.font.Font(None, 300)
+                # size = self.font.size("2 POINTS")
+                # font_surface = self.font.render("2 POINTS", False, (255, 255, 255))
+                # self.screen.blit(font_surface, (enemies.rect.x, enemies.rect.y))
                 classes.BaseClass.allsprites.remove(enemies)
                 classes.Shark.destroy(enemies)
 
@@ -227,6 +236,8 @@ def projectile_collisions(self):
             enemies.image = pygame.image.load("images/jelly2.png") # changed shark
 
             if enemies.health == 0:
+                pygame.mixer.music.load('music/trumpet.ogg')
+                pygame.mixer.music.play(0)
                 classes.BaseClass.allsprites.remove(enemies)
                 classes.Jellyfish.destroy(enemies)
 
