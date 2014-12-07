@@ -201,6 +201,9 @@ def collisions(self):
 
 def projectile_collisions(self):
 
+    image_hit_shark_going_right = "images/shark_hit_reverse.png"
+    image_hit_shark_going_left = "images/shark_hit.png"
+
     for enemies in classes.Shark.List:
 
         projectiles = pygame.sprite.spritecollide(enemies, classes.FishProjectile.List, True) # when a player projectile collides with a enemy it returns the projectiles in the projectiles list
@@ -208,10 +211,10 @@ def projectile_collisions(self):
         for projectile in projectiles:
 
             enemies.health -= enemies.half_health
-            enemies.image = pygame.image.load("images/shark3.png") # changed shark
-
-            if enemies.flip_count % 2 == 1:
-                enemies.image = pygame.transform.flip(enemies.image, True, False)
+            if enemies.going_right:
+                enemies.image = pygame.image.load(image_hit_shark_going_right) # changed shark
+            else:
+                enemies.image = pygame.image.load(image_hit_shark_going_left) # changed shark
 
             if enemies.health == 0:
                 pygame.mixer.music.load('music/trumpet.ogg')

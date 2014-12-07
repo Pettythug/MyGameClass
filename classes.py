@@ -182,7 +182,8 @@ class Fish(BaseClass):
 
 
 class Shark(BaseClass):
-    List = pygame.sprite.Group()            
+    List = pygame.sprite.Group()
+    going_right = True
 
     def __init__(self, x, y, image_string):
 
@@ -216,7 +217,10 @@ class Shark(BaseClass):
         if self.rect.x + self.rect.width > SCREENWIDTH or self.rect.x < 0:
             self.image = pygame.transform.flip(self.image, True, False)
             self.velx = -self.velx
-            self.flip_count += 1
+            if self.going_right:
+                self.going_right = False
+            else:
+                self.going_right = True
 
         self.rect.x += self.velx
 
