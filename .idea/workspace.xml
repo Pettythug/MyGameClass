@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb3b6791-df42-46a1-a64b-40895d80702f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/shark_hit.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/shark_hit_reverse.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes.py" afterPath="$PROJECT_DIR$/classes.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process.py" afterPath="$PROJECT_DIR$/process.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MyGameClass.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -22,7 +19,7 @@
     <SUITE FILE_PATH="coverage/MyGameClass$rotation.coverage" NAME="rotation Coverage Results" MODIFIED="1414948170291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MyGameClass$Trail.coverage" NAME="Trail Coverage Results" MODIFIED="1414939380872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MyGameClass$game.coverage" NAME="game Coverage Results" MODIFIED="1414816944354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop/Inf125 Game/BB_FinalGame/PyGame" />
-    <SUITE FILE_PATH="coverage/MyGameClass$Game.coverage" NAME="Game Coverage Results" MODIFIED="1417967755076" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MyGameClass$Game.coverage" NAME="Game Coverage Results" MODIFIED="1417973144899" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MyGameClass$1945.coverage" NAME="1945 Coverage Results" MODIFIED="1414803119040" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop/Inf125 Game/1945" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -50,8 +47,8 @@
       <file leaf-file-name="classes.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3400" max-vertical-offset="7548">
-              <caret line="222" column="39" selection-start-line="222" selection-start-column="39" selection-end-line="222" selection-end-column="39" />
+            <state vertical-scroll-proportion="30.948717" vertical-offset="3927" max-vertical-offset="7548">
+              <caret line="164" column="31" selection-start-line="164" selection-start-column="31" selection-end-line="164" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -80,10 +77,17 @@
       <file leaf-file-name="process.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/process.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.12256809" vertical-offset="3684" max-vertical-offset="4420">
-              <caret line="216" column="93" selection-start-line="216" selection-start-column="93" selection-end-line="216" selection-end-column="93" />
+            <state vertical-scroll-proportion="0.23929961" vertical-offset="1305" max-vertical-offset="4420">
+              <caret line="87" column="24" selection-start-line="87" selection-start-column="24" selection-end-line="87" selection-end-column="24" />
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shark2.png" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/images/shark2.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
           </provider>
         </entry>
       </file>
@@ -622,14 +626,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="20825" max-vertical-offset="29563">
-          <caret line="1225" column="0" selection-start-line="1225" selection-start-column="0" selection-end-line="1226" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/classes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="4930">
@@ -972,14 +968,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3400" max-vertical-offset="7548">
-          <caret line="222" column="39" selection-start-line="222" selection-start-column="39" selection-end-line="222" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Desktop/Inf125 Game/1945/1945.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1540" max-vertical-offset="5508">
@@ -1004,10 +992,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/images/shark2.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="30.948717" vertical-offset="3927" max-vertical-offset="7548">
+          <caret line="164" column="31" selection-start-line="164" selection-start-column="31" selection-end-line="164" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/process.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.12256809" vertical-offset="3684" max-vertical-offset="4420">
-          <caret line="216" column="93" selection-start-line="216" selection-start-column="93" selection-end-line="216" selection-end-column="93" />
+        <state vertical-scroll-proportion="0.23929961" vertical-offset="1305" max-vertical-offset="4420">
+          <caret line="87" column="24" selection-start-line="87" selection-start-column="24" selection-end-line="87" selection-end-column="24" />
           <folding />
         </state>
       </provider>

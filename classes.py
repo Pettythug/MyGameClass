@@ -162,7 +162,7 @@ class Fish(BaseClass):
         else:
             previous_x.pop(0)
 
-        if y + height > 0 and y + height < SCREENHEIGHT:
+        if y + height > 0 and y < SCREENHEIGHT:
             self.rect.x = x - width / 2
             self.rect.y = y - height / 2
 
@@ -389,7 +389,7 @@ class FishProjectile(pygame.sprite.Sprite):
             last_element = FishProjectile.normal_list[-1]
             difference = abs(self.rect.x - last_element.rect.x)
 
-            if difference < self.width:
+            if difference < self.width * 7:
                 return
 
         except Exception:

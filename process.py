@@ -85,7 +85,7 @@ def spawn(self, FPS, total_frames):
         r = random.randint(1, 3)
         y = 1
         if r == 2:
-            y = 600 - 150
+            y = 600 - 74
         elif r == 3:
             y = 600 / 2 - 150 / 2
         classes.Shark(0, y, image_shark)
