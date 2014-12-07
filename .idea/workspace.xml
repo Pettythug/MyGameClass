@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="eb3b6791-df42-46a1-a64b-40895d80702f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes.py" afterPath="$PROJECT_DIR$/classes.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process.py" afterPath="$PROJECT_DIR$/process.py" />
     </list>
     <ignored path="MyGameClass.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -19,7 +18,7 @@
     <SUITE FILE_PATH="coverage/MyGameClass$rotation.coverage" NAME="rotation Coverage Results" MODIFIED="1414948170291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MyGameClass$Trail.coverage" NAME="Trail Coverage Results" MODIFIED="1414939380872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MyGameClass$game.coverage" NAME="game Coverage Results" MODIFIED="1414816944354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop/Inf125 Game/BB_FinalGame/PyGame" />
-    <SUITE FILE_PATH="coverage/MyGameClass$Game.coverage" NAME="Game Coverage Results" MODIFIED="1417973144899" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MyGameClass$Game.coverage" NAME="Game Coverage Results" MODIFIED="1417973396714" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MyGameClass$1945.coverage" NAME="1945 Coverage Results" MODIFIED="1414803119040" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop/Inf125 Game/1945" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -44,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="classes.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="classes.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/classes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="30.948717" vertical-offset="3927" max-vertical-offset="7548">
-              <caret line="164" column="31" selection-start-line="164" selection-start-column="31" selection-end-line="164" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.67741936" vertical-offset="6222" max-vertical-offset="7548">
+              <caret line="391" column="42" selection-start-line="391" selection-start-column="42" selection-end-line="391" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -74,10 +73,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="process.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="process.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/process.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.23929961" vertical-offset="1305" max-vertical-offset="4420">
+            <state vertical-scroll-proportion="59.615383" vertical-offset="3753" max-vertical-offset="4420">
               <caret line="87" column="24" selection-start-line="87" selection-start-column="24" selection-end-line="87" selection-end-column="24" />
               <folding />
             </state>
@@ -117,8 +116,8 @@
         <option value="$PROJECT_DIR$/Trail.py" />
         <option value="$PROJECT_DIR$/rotation.py" />
         <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/classes.py" />
         <option value="$PROJECT_DIR$/process.py" />
+        <option value="$PROJECT_DIR$/classes.py" />
       </list>
     </option>
   </component>
@@ -997,18 +996,18 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classes.py">
+    <entry file="file://$PROJECT_DIR$/process.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="30.948717" vertical-offset="3927" max-vertical-offset="7548">
-          <caret line="164" column="31" selection-start-line="164" selection-start-column="31" selection-end-line="164" selection-end-column="31" />
+        <state vertical-scroll-proportion="59.615383" vertical-offset="3753" max-vertical-offset="4420">
+          <caret line="87" column="24" selection-start-line="87" selection-start-column="24" selection-end-line="87" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/process.py">
+    <entry file="file://$PROJECT_DIR$/classes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23929961" vertical-offset="1305" max-vertical-offset="4420">
-          <caret line="87" column="24" selection-start-line="87" selection-start-column="24" selection-end-line="87" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.67741936" vertical-offset="6222" max-vertical-offset="7548">
+          <caret line="391" column="42" selection-start-line="391" selection-start-column="42" selection-end-line="391" selection-end-column="42" />
           <folding />
         </state>
       </provider>

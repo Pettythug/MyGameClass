@@ -389,7 +389,7 @@ class FishProjectile(pygame.sprite.Sprite):
             last_element = FishProjectile.normal_list[-1]
             difference = abs(self.rect.x - last_element.rect.x)
 
-            if difference < self.width * 7:
+            if difference < self.width * 8:
                 return
 
         except Exception:
