@@ -14,6 +14,10 @@ def process(self, fish, FPS, total_frames):
 
         if keys[pygame.K_RETURN] and self.state == classes.FISH_IN_WATER:
             self.state = classes.FISH_PLAYING
+        elif keys[pygame.K_RETURN] and self.state == classes.FISH_GAME_OVER:
+            self.state = classes.FISH_PLAYING
+        elif keys[pygame.K_RETURN] and self.state == classes.FISH_WON:
+            self.state = classes.FISH_PLAYING
 
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             classes.Fish.going_right = True
@@ -148,9 +152,15 @@ def collisions(self):
                 classes.Fish.remove(fish)
                 classes.BaseClass.allsprites.remove(fish)
                 classes.Shark.remove(sharks)
+                for num in classes.Jellyfish.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Jellyfish.destroy(num)
                 for num in classes.Shark.List:
                         classes.BaseClass.allsprites.remove(num)
                         classes.Shark.destroy(num)
+                for num in classes.Bag.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Bag.destroy(num)
                 classes.Fish.destroy(fish)
 
 
@@ -176,6 +186,12 @@ def collisions(self):
                 for num in classes.Jellyfish.List:
                         classes.BaseClass.allsprites.remove(num)
                         classes.Jellyfish.destroy(num)
+                for num in classes.Shark.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Shark.destroy(num)
+                for num in classes.Bag.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Bag.destroy(num)
                 classes.Fish.destroy(fish)
 
                 if self.lives > 0:
@@ -197,6 +213,12 @@ def collisions(self):
                 classes.Fish.remove(fish)
                 classes.BaseClass.allsprites.remove(fish)
                 classes.Bag.remove(bags)
+                for num in classes.Jellyfish.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Jellyfish.destroy(num)
+                for num in classes.Shark.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Shark.destroy(num)
                 for num in classes.Bag.List:
                         classes.BaseClass.allsprites.remove(num)
                         classes.Bag.destroy(num)
