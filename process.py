@@ -82,24 +82,26 @@ def spawn(self, FPS, total_frames):
     if total_frames % (FPS * 5) == 0:  # spawns a new shark every 4 seconds
         image_shark = "images/shark2.png"
         img = Image.open(image_shark)
+        s_height, s_width = img.size
         r = random.randint(1, 3)
         y = 1
         if r == 2:
             y = 600 - 150
         elif r == 3:
             y = 600 / 2 - 150 / 2
-        classes.Shark(0, y, image_shark)
+        classes.Shark((s_width * -1), y, image_shark)
 
     if total_frames % (FPS * 2.5) == 0:  # spawns a new jelly every 2 seconds
 
         image_bag = "images/jelly.png"
         img = Image.open(image_bag)
+        j_height, j_width = img.size
         if random.randint(1, 2) == 1:
             x = 0
         else:
             x = 800
         y = random.randint(100, 450)
-        classes.Jellyfish(x, y, image_bag)
+        classes.Jellyfish(j_width * -2, y, image_bag)
 
 
     if total_frames % (FPS * 7.5)  == 0:  # spawns a new bag every 8 seconds
@@ -112,19 +114,19 @@ def spawn(self, FPS, total_frames):
             else:
                 image_bag = "images/trashbag.png"
             img = Image.open(image_bag)
-            y = random.randint(1, 150)
+            y = 600
             x = random.randint(0, 25)
             classes.Bag(x, y, image_bag)
         elif r == 2:
             image_bag = "images/can.png"
-            y = random.randint(1, 150)
+            y = 600
             x = random.randint(0, 25)
             classes.Bag(x, y, image_bag)
         elif r == 3:
             image_bag = "images/can.png"
             img = Image.open(image_bag)
             y = 0
-            x = random.randint(1, 200)
+            x = 600
             classes.Bag(x, y, image_bag)
     
         
@@ -155,7 +157,10 @@ def collisions(self):
                 if self.lives > 0:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
-                else : self.state = classes.FISH_GAME_OVER
+                else: 
+                    self.state = classes.FISH_GAME_OVER
+                    pygame.mixer.music.load('music/end.ogg')
+                    pygame.mixer.music.play(0)
 
         for jellyfishes in classes.Jellyfish.List:
 
@@ -176,7 +181,10 @@ def collisions(self):
                 if self.lives > 0:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
-                else : self.state = classes.FISH_GAME_OVER
+                else: 
+                    self.state = classes.FISH_GAME_OVER
+                    pygame.mixer.music.load('music/end.ogg')
+                    pygame.mixer.music.play(0)
 
         for bags in classes.Bag.List:
 
@@ -197,7 +205,10 @@ def collisions(self):
                 if self.lives > 0:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
-                else : self.state = classes.FISH_GAME_OVER
+                else:
+                    self.state = classes.FISH_GAME_OVER
+                    pygame.mixer.music.load('music/end.ogg')
+                    pygame.mixer.music.play(0)
 
 def projectile_collisions(self):
 
@@ -240,6 +251,7 @@ def projectile_collisions(self):
                 pygame.mixer.music.play(0)
                 classes.BaseClass.allsprites.remove(enemies)
                 classes.Jellyfish.destroy(enemies)
+                self.screen.blit(self.background, (0, 0))
 
             projectile.rect.x = 2 * -projectile.rect.width
             projectile.destroy()
