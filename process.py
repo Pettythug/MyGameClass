@@ -119,7 +119,7 @@ def spawn(self, FPS, total_frames):
 
     if total_frames % (FPS * 7.5)  == 0:  # spawns a new bag every 8 seconds
         r = random.randint(1, 3)
-        x = random.randint(0, classes.SCREENWIDTH)
+
         y = 0
         if r == 1:
             if random.randint(1, 2) == 1:
@@ -132,7 +132,10 @@ def spawn(self, FPS, total_frames):
 
         elif r == 3:
             image_bag = "images/can.png"
+
         img = Image.open(image_bag)
+        width, height = img.size
+        x = random.randint(0, classes.SCREENWIDTH - width)
         classes.Bag(x, y, image_bag)
     
         
