@@ -162,7 +162,7 @@ class Fish(BaseClass):
         else:
             previous_x.pop(0)
 
-        if y + height > 0 and y + height < SCREENHEIGHT:
+        if y + height > 0 and y < SCREENHEIGHT:
             self.rect.x = x - width / 2
             self.rect.y = y - height / 2
 
@@ -182,7 +182,8 @@ class Fish(BaseClass):
 
 
 class Shark(BaseClass):
-    List = pygame.sprite.Group()            
+    List = pygame.sprite.Group()
+    going_right = True
 
     def __init__(self, x, y, image_string):
 
@@ -216,7 +217,10 @@ class Shark(BaseClass):
         if self.rect.x > SCREENWIDTH or self.rect.x < ((self.rect.width + 1) * -1):
             self.image = pygame.transform.flip(self.image, True, False)
             self.velx = -self.velx
-            self.flip_count += 1
+            if self.going_right:
+                self.going_right = False
+            else:
+                self.going_right = True
 
         self.rect.x += self.velx
 
@@ -383,7 +387,7 @@ class FishProjectile(pygame.sprite.Sprite):
             last_element = FishProjectile.normal_list[-1]
             difference = abs(self.rect.x - last_element.rect.x)
 
-            if difference < self.width:
+            if difference < self.width * 8:
                 return
 
         except Exception:
