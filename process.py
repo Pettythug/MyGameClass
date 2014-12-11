@@ -117,28 +117,21 @@ def spawn(self, FPS, total_frames):
 
     if total_frames % (FPS * 7.5)  == 0:  # spawns a new bag every 8 seconds
         r = random.randint(1, 3)
-        x = 0
-        y = 1
-        if r == 1: 
+        x = random.randint(0, classes.SCREENWIDTH)
+        y = 0
+        if r == 1:
             if random.randint(1, 2) == 1:
                 image_bag = "images/bag.png"
             else:
                 image_bag = "images/trashbag.png"
-            img = Image.open(image_bag)
-            y = 0
-            x = random.randint(0, classes.SCREENWIDTH)
-            classes.Bag(x, y, image_bag)
+
         elif r == 2:
             image_bag = "images/can.png"
-            y = 0
-            x = random.randint(0, classes.SCREENWIDTH)
-            classes.Bag(x, y, image_bag)
+
         elif r == 3:
             image_bag = "images/can.png"
-            img = Image.open(image_bag)
-            y = 0
-            x = random.randint(1, classes.SCREENWIDTH)
-            classes.Bag(x, y, image_bag)
+        img = Image.open(image_bag)
+        classes.Bag(x, y, image_bag)
     
         
 

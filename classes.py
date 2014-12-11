@@ -302,7 +302,7 @@ class Bag(BaseClass):
             Bag.List.add(self)
             self.health = 100
             self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
-            self.velx, self.vely = randint(1, 2), randint(0, 5)
+            self.velx, self.vely = randint(1, 2), randint(1, 5)
             self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
             self.direction = 0
 
