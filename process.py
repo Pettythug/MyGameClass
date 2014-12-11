@@ -18,6 +18,7 @@ def process(self, fish, FPS, total_frames):
             self.state = classes.FISH_PLAYING
             self.score = 0
             self.flip_count = 0
+            self.total_frames = 0
             self.lives = 3
             self.state = classes.FISH_IN_WATER
             self.fish = classes.Fish(0, 520, "images/cartoon-goldfish.png")
@@ -26,6 +27,7 @@ def process(self, fish, FPS, total_frames):
             self.score = 0
             self.flip_count = 0
             self.lives = 3
+            self.total_frames = 0
             self.state = classes.FISH_IN_WATER
 
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:

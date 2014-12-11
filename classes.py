@@ -244,6 +244,7 @@ class Jellyfish(BaseClass):
             self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
             self.velx, self.vely = randint(2, 3), randint(2, 4)
             self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
+            self.direction = 0
 
     @staticmethod
     def update_all(SCREENWIDTH, SCREENHEIGHT):
@@ -262,7 +263,7 @@ class Jellyfish(BaseClass):
 
     def jellyfishes(self, SCREENWIDTH, SCREENHEIGHT):
         # Keeps the jellies from being dropped outside the screen
-        if self.rect.x > 800: # if outside the right walls
+        if self.rect.x > 750: # if outside the right walls
             self.velx = -self.velx
             self.destroy()
             classes.BaseClass.allsprites.remove(self)
@@ -276,10 +277,12 @@ class Jellyfish(BaseClass):
             if self.rect.y - self.rect.height < 0: # if outside the top wall
                 self.vely = -self.vely
             self.rect.x += self.velx
-            if random.randint(1, 2) == 1:
-                self.rect.y += .5
-            else:
-                self.rect.y -= .75
+            if self.direction == 0:
+                self.direction = random.randint(0,1)
+                if self.direction == 1:
+                    self.vely = -self.vely
+
+            self.rect.y += self.vely
 
         #Sin couve is -- (a * sin( bx + c ) + y)
 
@@ -304,7 +307,6 @@ class Bag(BaseClass):
             self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
             self.velx, self.vely = randint(1, 2), randint(1, 5)
             self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
-            self.direction = 0
 
     @staticmethod
     def update_all(SCREENWIDTH, SCREENHEIGHT):
