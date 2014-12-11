@@ -214,7 +214,7 @@ class Shark(BaseClass):
 
     def sharks(self, SCREENWIDTH, SCREENHEIGHT):
         # Keeps the sharks from being dropped outside the screen
-        if self.rect.x > SCREENWIDTH or self.rect.x < ((self.rect.width + 1) * -1):
+        if self.rect.x + self.rect.width > SCREENWIDTH or self.rect.x < 0:
             self.image = pygame.transform.flip(self.image, True, False)
             self.velx = -self.velx
             if self.going_right:
@@ -244,7 +244,6 @@ class Jellyfish(BaseClass):
             self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
             self.velx, self.vely = randint(2, 3), randint(2, 4)
             self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
-            self.direction = 0
 
     @staticmethod
     def update_all(SCREENWIDTH, SCREENHEIGHT):
@@ -263,26 +262,29 @@ class Jellyfish(BaseClass):
 
     def jellyfishes(self, SCREENWIDTH, SCREENHEIGHT):
         # Keeps the jellies from being dropped outside the screen
-        if self.rect.x > 800 + self.rect.x : # if outside the right walls
+        if self.rect.x > 800: # if outside the right walls
             self.velx = -self.velx
             self.destroy()
             classes.BaseClass.allsprites.remove(self)
+        elif self.rect.x < 0: # if outside the left walls
+            self.velx = -self.velx
+            self.destroy()
+            classes.BaseClass.allsprites.remove(self)
+        else:
+            if self.rect.y + self.rect.height > SCREENHEIGHT:# if outside the bottom wall
+                self.vely = -self.vely
+            if self.rect.y - self.rect.height < 0: # if outside the top wall
+                self.vely = -self.vely
+            self.rect.x += self.velx
+            if random.randint(1, 2) == 1:
+                self.rect.y += .5
+            else:
+                self.rect.y -= .75
 
-        if self.rect.y + self.rect.height > 550:# if outside the bottom wall
-            self.vely = -self.vely
-        if self.rect.y - self.rect.height < 50: # if outside the top wall
-            self.vely = -self.vely
-        self.rect.x += self.velx
-        if self.direction == 0: # if direction has not been determined yet,
-                if random.randint(0,1) == 1: # 50/50 chance to go left or go right
-                    self.direction = 1
-                else:
-                    self.direction = -1
-        self.rect.y += self.vely * self.direction
-            
-        # Sin couve is -- (a * sin( bx + c ) + y)
+        #Sin couve is -- (a * sin( bx + c ) + y)
 
-        # self.rect.y = self.amplitude * math.sin(self.period * self.rect.x) + 140
+        #self.rect.y = self.amplitude * math.sin(self.period * self.rect.x) + 140
+
 
     def destroy(self):
         Jellyfish.List.remove(self)
@@ -300,7 +302,7 @@ class Bag(BaseClass):
             Bag.List.add(self)
             self.health = 100
             self.half_health = self.health / 2.0  # will make it so you have to hit the shark twice in order to kill it
-            self.velx, self.vely = randint(1, 2), randint(1, 2)
+            self.velx, self.vely = randint(1, 2), randint(0, 5)
             self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
             self.direction = 0
 
@@ -321,18 +323,10 @@ class Bag(BaseClass):
 
     def bags(self, SCREENWIDTH, SCREENHEIGHT):
         # Keeps the jellies from being dropped outside the screen
-        if self.rect.y + self.rect.height <= 50: # if above top wall
-            if self.direction == 0: # if direction has not been determined yet,
-                if random.randint(0,1) == 1: # 50/50 chance to go left or go right
-                    self.direction = 1
-                else:
-                    self.direction = -1
-            self.rect.x += self.velx * self.direction
-            if self.rect.x + self.rect.width > SCREENWIDTH or self.rect.x + self.rect.width < 0: # if outside the bottom wall
-                self.destroy()
-                classes.BaseClass.allsprites.remove(self)
-        else:
-            self.rect.y -= self.vely
+        if self.rect.y + self.rect.height > SCREENHEIGHT or self.rect.y < 0:
+            self.vely = -self.vely
+
+        self.rect.y += self.vely
 
     def destroy(self):
         Bag.List.remove(self)
