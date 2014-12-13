@@ -2,6 +2,7 @@ import pygame, sys, classes, random
 from PIL import Image
 import Game
 from random import randint
+global PELLETS
 
 
 def process(self, fish, FPS, total_frames):
@@ -55,35 +56,37 @@ def process(self, fish, FPS, total_frames):
                 else:
                     p.image = pygame.transform.flip(p.image, True, False)  # flips the image when shooting the other direction
                     p.velx = -8
-
-            if classes.Fish.going_right:
-                r = random.randint(0,4)
-                if r == 1:
-                    pebble_img = "images/pebble1.png"
-                elif r == 2:
-                    pebble_img = "images/pebble2.png"
-                elif r == 3:
-                    pebble_img = "images/pebble3.png"
-                elif r== 4:
-                    pebble_img = "images/pebble4.png"
+            if classes.Pellet.List > 0:
+                if classes.Fish.going_right:
+                    r = random.randint(0,4)
+                    if r == 1:
+                        pebble_img = "images/pebble1.png"
+                    elif r == 2:
+                        pebble_img = "images/pebble2.png"
+                    elif r == 3:
+                        pebble_img = "images/pebble3.png"
+                    elif r== 4:
+                        pebble_img = "images/pebble4.png"
+                    else:
+                        pebble_img = "images/pebble.png"
+                    p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
+                    direction()
                 else:
-                    pebble_img = "images/pebble.png"
-                p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
-                direction()
-            else:
-                r = random.randint(0,4)
-                if r == 1:
-                    pebble_img = "images/pebble1.png"
-                elif r == 2:
-                    pebble_img = "images/pebble2.png"
-                elif r == 3:
-                    pebble_img = "images/pebble3.png"
-                elif r== 4:
-                    pebble_img = "images/pebble4.png"
-                else:
-                    pebble_img = "images/pebble.png"
-                p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
-                direction()
+                    r = random.randint(0,4)
+                    if r == 1:
+                        pebble_img = "images/pebble1.png"
+                    elif r == 2:
+                        pebble_img = "images/pebble2.png"
+                    elif r == 3:
+                        pebble_img = "images/pebble3.png"
+                    elif r== 4:
+                        pebble_img = "images/pebble4.png"
+                    else:
+                        pebble_img = "images/pebble.png"
+                    p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
+                    direction()
+            else: 
+                pass
             pygame.mixer.music.load('music/fire.ogg')
             pygame.mixer.music.play(0)
 
@@ -262,7 +265,13 @@ def collisions(self):
             col = fish.rect.colliderect(pellets.rect)
 
             if col:
-                pass
+                for num in classes.Pellet.List:
+                    classes.BaseClass.allsprites.remove(num)
+                    classes.Pellet.destroy(num)
+
+
+
+
 
 
 def projectile_collisions(self):

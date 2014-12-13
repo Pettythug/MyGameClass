@@ -403,7 +403,6 @@ class FishProjectile(pygame.sprite.Sprite):
     freeze = True
 
     def __init__(self, x, y, going_right, image_string):
-
         pygame.sprite.Sprite.__init__(self)
         img = Image.open("images/cartoon-goldfish.png")
         width, height = img.size
