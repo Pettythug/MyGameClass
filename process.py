@@ -138,6 +138,26 @@ def spawn(self, FPS, total_frames):
         x = random.randint(0, classes.SCREENWIDTH - width)
         classes.Bag(x, y, image_bag)
     
+    if total_frames % (FPS * 5)  == 0:  # spawns a new Pellet every 6 seconds
+        r = random.randint(1, 3)
+
+        y = 0
+        if r == 1:
+            if random.randint(1, 2) == 1:
+                image_pellet = "images/pebble1.png"
+            else:
+                image_pellet = "images/pebble2.png"
+
+        elif r == 2:
+            image_pellet = "images/pebble3.png"
+
+        elif r == 3:
+            image_pellet = "images/pebble4.png"
+
+        img = Image.open(image_pellet)
+        width, height = img.size
+        x = random.randint(0, classes.SCREENWIDTH - width)
+        classes.Pellet(x, y, image_pellet)
         
 
 def collisions(self):
@@ -166,6 +186,9 @@ def collisions(self):
                 for num in classes.Bag.List:
                         classes.BaseClass.allsprites.remove(num)
                         classes.Bag.destroy(num)
+                for num in classes.Pellet.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Pellet.destroy(num)
                 classes.Fish.destroy(fish)
 
 
@@ -194,6 +217,9 @@ def collisions(self):
                 for num in classes.Bag.List:
                         classes.BaseClass.allsprites.remove(num)
                         classes.Bag.destroy(num)
+                for num in classes.Pellet.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Pellet.destroy(num)
                 classes.Fish.destroy(fish)
 
                 if self.lives > 0:
@@ -221,12 +247,23 @@ def collisions(self):
                 for num in classes.Bag.List:
                         classes.BaseClass.allsprites.remove(num)
                         classes.Bag.destroy(num)
+                for num in classes.Pellet.List:
+                        classes.BaseClass.allsprites.remove(num)
+                        classes.Pellet.destroy(num)
                 classes.Fish.destroy(fish)
 
                 if self.lives > 0:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
                 else : self.state = classes.FISH_GAME_OVER
+        
+        for pellets in classes.Pellet.List:
+
+            col = fish.rect.colliderect(pellets.rect)
+
+            if col:
+                pass
+
 
 def projectile_collisions(self):
     

@@ -50,6 +50,7 @@ class Game:
                 Shark.update_all(SCREENWIDTH, SCREENHEIGHT)
                 Bag.update_all(SCREENWIDTH, SCREENHEIGHT)
                 Jellyfish.update_all(SCREENWIDTH, SCREENHEIGHT)
+                Pellet.update_all(SCREENWIDTH, SCREENHEIGHT)
                 spawn(self, self.FPS, self.total_frames)
                 collisions(self)
                 # jelly_collisions(self)
@@ -292,6 +293,45 @@ class Jellyfish(BaseClass):
     def destroy(self):
         Jellyfish.List.remove(self)
         # Jellyfish.normal_list.remove(self)
+        del self
+
+class Pellet(BaseClass):
+    List = pygame.sprite.Group()
+
+    def __init__(self, x, y, image_string):
+
+        if len(Pellet.List) < 4:
+            BaseClass.__init__(self, x, y, image_string)
+            Pellet.List.add(self)
+            self.health = 100
+            self.velx, self.vely = randint(1, 2), randint(1, 5)
+            self.amplitude, self.period = randint(20, 140), randint(4, 5) / 100.0
+
+    @staticmethod
+    def update_all(SCREENWIDTH, SCREENHEIGHT):
+
+        for pellets in Pellet.List:
+
+            if pellets.health <= 0:  # if our shark is dead
+                if pellets.rect.y + pellets.rect.height < SCREENHEIGHT:  # check to see if it is still above the bottom
+                    pellets.velx = 0  # if true it drops down
+            else:
+                pellets.pellets(SCREENWIDTH, SCREENHEIGHT)  # if false it continues to move.
+
+
+                # if shark.health <= 0: #destorys the sharks if the health is less than or eaqual to zero
+                # shark.destroy(Shark)
+
+    def pellets(self, SCREENWIDTH, SCREENHEIGHT):
+        # Keeps the jellies from being dropped outside the screen
+        if self.rect.y + self.rect.height > SCREENHEIGHT or self.rect.y < 0:
+            self.vely = -self.vely
+
+        self.rect.y += self.vely
+
+    def destroy(self):
+        Pellet.List.remove(self)
+        # Shark.normal_list.remove(self)
         del self
 
 
