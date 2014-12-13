@@ -229,22 +229,14 @@ def collisions(self):
                 else : self.state = classes.FISH_GAME_OVER
 
 def projectile_collisions(self):
-
-    image_hit_shark_going_right = "images/shark_hit_reverse.png"
-    image_hit_shark_going_left = "images/shark_hit.png"
-
-    for enemies in classes.Shark.List:
+    
+    for enemies in classes.Bag.List:
 
         projectiles = pygame.sprite.spritecollide(enemies, classes.FishProjectile.List, True) # when a player projectile collides with a enemy it returns the projectiles in the projectiles list
 
         for projectile in projectiles:
 
             enemies.health -= enemies.half_health
-            if enemies.going_right:
-                enemies.image = pygame.image.load(image_hit_shark_going_right) # changed shark
-            else:
-                enemies.image = pygame.image.load(image_hit_shark_going_left) # changed shark
-
             if enemies.health == 0:
                 pygame.mixer.music.load('music/trumpet.ogg')
                 pygame.mixer.music.play(0)
@@ -253,30 +245,10 @@ def projectile_collisions(self):
                 # font_surface = self.font.render("2 POINTS", False, (255, 255, 255))
                 # self.screen.blit(font_surface, (enemies.rect.x, enemies.rect.y))
                 classes.BaseClass.allsprites.remove(enemies)
-                classes.Shark.destroy(enemies)
+                classes.Bag.destroy(enemies)
 
             projectile.rect.x = 2 * -projectile.rect.width
             projectile.destroy()
-
-    for enemies in classes.Jellyfish.List:
-
-        projectiles = pygame.sprite.spritecollide(enemies, classes.FishProjectile.List, True) # when a player projectile collides with a enemy it returns the projectiles in the projectiles list
-
-        for projectile in projectiles:
-
-            enemies.health -= enemies.half_health
-            enemies.image = pygame.image.load("images/jelly2.png") # changed shark
-
-            if enemies.health == 0:
-                pygame.mixer.music.load('music/trumpet.ogg')
-                pygame.mixer.music.play(0)
-                classes.BaseClass.allsprites.remove(enemies)
-                classes.Jellyfish.destroy(enemies)
-
-            projectile.rect.x = 2 * -projectile.rect.width
-            projectile.destroy()
-        # PROCESSING
-
 
 
 
