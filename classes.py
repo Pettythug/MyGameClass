@@ -66,7 +66,7 @@ class Game:
                 # jelly_collisions(self)
                 BaseClass.allsprites.draw(self.screen)
                 FishProjectile.List.draw(self.screen)
-                FishProjectile.movement(self)
+                FishProjectile.movement()
 
                 # print self.score
                 show_cleanup(self, "%s" % ((LEVEL) - self.kills + 3))
@@ -77,7 +77,6 @@ class Game:
 
             elif self.state == FISH_IN_WATER:
                 show_message(self, "PRESS Enter TO START", 30, "MIDDLE")
-                self.play_frames += 1
 
             elif self.state == START_SCREEN:
                 show_message(self, "KOI", 200, "TOP_MIDDLE_CENTER")
@@ -87,7 +86,7 @@ class Game:
                 Button.credits.update_display(self.screen, (100,149,237), (SCREENWIDTH + 50) / 2, (SCREENHEIGHT + 450) / 2 , 200,    50,    0,        "Credits", (255,255,255))
 
             elif self.state == FISH_GAME_OVER:
-                show_message(self, "GAME OVER." , 30, "MIDDLE")
+                show_message(self, "GAME OVER. Your score is %s" % (self.score/30), 30, "MIDDLE")
                 Button.Button1.update_display(self.screen, (107,142,35), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Try Again?", (255,255,255))
 
             elif self.state == CREDITS:
@@ -389,15 +388,7 @@ class Pellet(BaseClass):
 
     def __init__(self, x, y, image_string):
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         if len(Pellet.List) + Fish.pellets < 2:
-=======
-        if len(Pellet.List) < 3:
->>>>>>> fixups
-=======
-        if len(Pellet.List) < 3:
->>>>>>> fixups
             BaseClass.__init__(self, x, y, image_string)
             Pellet.List.add(self)
             self.health = 100
@@ -495,6 +486,7 @@ class FishProjectile(pygame.sprite.Sprite):
         self.rect.y = y + height / 2
         self.width = width
         self.height = height
+
         try:
             last_element = FishProjectile.normal_list[-1]
             difference = abs(self.rect.x - last_element.rect.x)
@@ -511,12 +503,9 @@ class FishProjectile(pygame.sprite.Sprite):
         Fish.pellets -= 1
 
     @staticmethod
-    def movement(self):
+    def movement():
         for projectile in FishProjectile.List:
             projectile.rect.x += projectile.velx
-            if projectile.rect.x > SCREENWIDTH or projectile.rect.x < 0:
-                projectile.destroy()
-        
 
     def destroy(self):
         FishProjectile.List.remove(self)
@@ -533,7 +522,7 @@ def show_message(self, message, font_size, location):
         y = (SCREENHEIGHT/4) - (size[1])
     elif location == "TOP_MIDDLE_CENTER":
         x = (SCREENWIDTH - size[0]) / 2
-        y = (SCREENHEIGHT/4) - 75
+        y = (SCREENHEIGHT/4) - 50
     elif location == "TOP_MIDDLE_BOTTOM":
         x = (SCREENWIDTH - size[0]) / 2
         y = (SCREENHEIGHT/4) - 50

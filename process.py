@@ -31,14 +31,15 @@ def process(self, fish, FPS, total_frames, play_frames):
             elif self.state == classes.FISH_GAME_OVER:
                 if classes.Button.Button1.pressed(pygame.mouse.get_pos()):
                     self.state = classes.FISH_PLAYING
+                    self.score = 0
                     self.flip_count = 0
-                    self.kills = 0
                     self.total_frames = 0
                     self.lives = 3
                     classes.LEVEL = 1
                     self.fish = classes.Fish(0, 520, "images/cartoon-goldfish.png")
         elif keys[pygame.K_RETURN] and self.state == classes.FISH_WON:
             self.state = classes.FISH_PLAYING
+            self.score = 0
             self.flip_count = 0
             self.lives = 3
             self.total_frames = 0
@@ -61,30 +62,6 @@ def process(self, fish, FPS, total_frames, play_frames):
         else:
             fish.vely = 0
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        if self.state == classes.FISH_PLAYING and total_frames > 20:
-            if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[1] or pygame.mouse.get_pressed()[2]:
-                def direction():
-                    if classes.Fish.going_right:
-                        p.velx = 8
-                    else:
-                        p.image = pygame.transform.flip(p.image, True, False)  # flips the image when shooting the other direction
-                        p.velx = -8
-                if classes.Fish.pellets > 0:
-                    if classes.Fish.going_right:
-                        r = random.randint(0,4)
-                        if r == 1:
-                            pebble_img = "images/pebble1.png"
-                        elif r == 2:
-                            pebble_img = "images/pebble2.png"
-                        elif r == 3:
-                            pebble_img = "images/pebble3.png"
-                        elif r== 4:
-                            pebble_img = "images/pebble4.png"
-=======
-=======
->>>>>>> fixups
         if self.state == classes.FISH_PLAYING:
             self.play_frames +=1
             if self.play_frames > 3: # so that clicking the start button doesn't also fire a pebble
@@ -92,10 +69,6 @@ def process(self, fish, FPS, total_frames, play_frames):
                     def direction():
                         if classes.Fish.going_right:
                             p.velx = 8
-<<<<<<< HEAD
->>>>>>> fixups
-=======
->>>>>>> fixups
                         else:
                             p.image = pygame.transform.flip(p.image, True, False)  # flips the image when shooting the other direction
                             p.velx = -8
@@ -126,7 +99,7 @@ def process(self, fish, FPS, total_frames, play_frames):
 
 def spawn(self, FPS, total_frames):
     LEVEL = classes.LEVEL
-    if total_frames % (FPS * 2)  == 0:  # spawns a new shark every 8 seconds
+    if total_frames % (FPS * (LEVEL - (LEVEL / 2))) == 0:  # spawns a new shark every 4 seconds
         image_shark = "images/shark2.png"
         img = Image.open(image_shark)
         r = random.randint(1, 3)
@@ -137,7 +110,7 @@ def spawn(self, FPS, total_frames):
             y = 600 / 2 - 150 / 2
         classes.Shark(0, y, image_shark)
 
-    if total_frames % (FPS * 2)  == 0:  # spawns a new jelly every 8 seconds
+    if total_frames % (FPS * (LEVEL - (LEVEL / 2))) == 0:  # spawns a new jelly every 2 seconds
 
         image_bag = "images/jelly.png"
         img = Image.open(image_bag)
@@ -149,7 +122,7 @@ def spawn(self, FPS, total_frames):
         classes.Jellyfish(x, y, image_bag)
 
 
-    if total_frames % (FPS * 2)  == 0:  # spawns a new bag every 8 seconds
+    if total_frames % (FPS * 5)  == 0:  # spawns a new bag every 8 seconds
         r = random.randint(1, 3)
 
         y = 0
