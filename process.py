@@ -76,7 +76,7 @@ def process(self, fish, FPS, total_frames, play_frames):
                         else:
                             p.image = pygame.transform.flip(p.image, True, False)  # flips the image when shooting the other direction
                             p.velx = -8
-                    if classes.Pellet.List > 0:
+                    if classes.Fish.pellets > 0:
                         r = random.randint(0,4)
                         if r == 1:
                             pebble_img = "images/pebble1.png"
