@@ -15,6 +15,7 @@ INSTRUCTIONS = 5
 START_SCREEN = 6
 LEVEL = 1
 
+
 previous_x = [0]
 previous_y = 0
 
@@ -43,6 +44,7 @@ class Game:
         self.state = START_SCREEN
         self.flip_count = 0
         Button.Button1 = Button()
+        Button.Button2 = Button()
         Button.back = Button()
         Button.credits = Button()
         Button.instructions = Button()
@@ -56,6 +58,15 @@ class Game:
             position = pygame.mouse.get_pos()
 
             if self.state == FISH_PLAYING:
+                if LEVEL == 1 :
+                    self.background = pygame.image.load("images/Level1-3.jpg")
+                elif LEVEL >= 3 and LEVEL < 5:
+                    self.background = pygame.image.load("images/Level3-5.jpg")
+                elif LEVEL >= 5 and LEVEL <= 9:
+                    self.background = pygame.image.load("images/Level5-9.jpg")
+                elif LEVEL ==10:
+                    self.background = pygame.image.load("images/Level10.jpg")
+
                 self.fish.motion(self.fish, SCREENWIDTH, SCREENHEIGHT)
                 Shark.update_all(SCREENWIDTH, SCREENHEIGHT)
                 Bag.update_all(SCREENWIDTH, SCREENHEIGHT)
@@ -67,36 +78,44 @@ class Game:
                 BaseClass.allsprites.draw(self.screen)
                 FishProjectile.List.draw(self.screen)
                 FishProjectile.movement()
-
                 # print self.score
-                show_cleanup(self, "%s" % ((LEVEL) - self.kills + 3))
-                show_cleanup_left(self, "Cleanups to Next Level")
+                # show_cleanup(self, "%s" % (self.kills))
+                # show_cleanup_left(self, "Cleanups to Next Level")
                 show_level(self, "%s" % (LEVEL))
                 show_lives(self, "Lives: ")
                 show_level_text(self, "LEVEL: ")
+                #create our fancy text renderer
+                bigfont = pygame.font.Font(None, 60)
+                white = 255, 255, 255
+                renderer = TextProgress(bigfont, "Next Level", white, (40, 40, 40))
+                text = renderer.render(0)
+                progress = (self.kills/float(LEVEL+3)) * 120
+                text = renderer.render(progress)
+                self.screen.blit(text, (0, 0))
 
             elif self.state == FISH_IN_WATER:
-                show_message(self, "PRESS Enter TO START", 30, "MIDDLE")
+                show_message(self, "PRESS the Button to START", 30, "MIDDLE")
+                Button.Button1.update_display(self.screen, (107,142,35), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Try Again?", (255,255,255))
 
             elif self.state == START_SCREEN:
-                show_message(self, "KOI", 200, "TOP_MIDDLE_CENTER")
-                
+                show_message(self, "KOI", 200, "TOP_MIDDLE_TOP")
                 Button.Button1.update_display(self.screen, (107,142,35), (SCREENWIDTH - 300) / 2, (SCREENHEIGHT) / 2 , 300,    75,    0,        "Start Game", (255,255,255))
                 Button.instructions.update_display(self.screen, (100,149,237), (SCREENWIDTH - 450) / 2, (SCREENHEIGHT + 450) / 2, 200,    50,    0,        "Tutorial", (255,255,255))
                 Button.credits.update_display(self.screen, (100,149,237), (SCREENWIDTH + 50) / 2, (SCREENHEIGHT + 450) / 2 , 200,    50,    0,        "Credits", (255,255,255))
 
             elif self.state == FISH_GAME_OVER:
-                show_message(self, "GAME OVER. Your score is %s" % (self.score/30), 30, "MIDDLE")
-                Button.Button1.update_display(self.screen, (107,142,35), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Try Again?", (255,255,255))
+                show_message(self, "GAME OVER",50, "MIDDLE")
+                Button.Button1.update_display(self.screen, (230,52,35), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Try Again?", (255,255,255))
 
             elif self.state == CREDITS:
                 show_message(self, "Team Ant Informatics 125" , 30,  "TOP_MIDDLE_CENTER")
                 Button.back.update_display(self.screen, (102,205,170), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Back", (255,255,255))
 
             elif self.state == INSTRUCTIONS:
-                show_message(self, "Destroy the Trash and avoid the Animals", 30,"TOP_MIDDLE_TOP")
-                show_message(self, "Pick up Pebbles to shoot the trash", 30,"TOP_MIDDLE_CENTER")
-                show_message(self, "You have 3 Lives", 30,"TOP_MIDDLE_BOTTOM")
+                show_message(self, "You Have 3 Lives", 30,"TOP_MIDDLE_TOP")
+                show_message(self, "Destroy the Trash to Level Up", 30,"TOP_MIDDLE_TOP2")
+                show_message(self, "Pick up Pebbles and CLICK to shoot them at Trash", 30,"TOP_MIDDLE_CENTER")
+                show_message(self, "Reach Level 10 to win the game", 30,"TOP_MIDDLE_BOTTOM")
                 Button.back.update_display(self.screen, (102,205,170), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Back", (255,255,255))
 
             elif LEVEL == 10:
@@ -107,8 +126,7 @@ class Game:
 
             self.total_frames += 1
             # LOGIC
-
-            # DRAW
+  
 
 
             #screen.blit(img_goldfish, (100,100) ) # renders image on the screen at spot 100 X 100
@@ -141,6 +159,53 @@ class BaseClass(pygame.sprite.Sprite):
         ClassName.List.remove(self)
         BaseClass.allsprites.remove(self)
         del self
+
+class TextProgress:
+    def __init__(self, font, message, color, bgcolor):
+        self.font = font
+        self.message = message
+        self.color = color
+        self.bgcolor = bgcolor
+        self.offcolor = [c^40 for c in color]
+        self.notcolor = [c^0xFF for c in color]
+        self.text = font.render(message, 0, (255,0,0), self.notcolor)
+        self.text.set_colorkey(1)
+        self.outline = self.textHollow(font, message, color)
+        self.bar = pygame.Surface(self.text.get_size())
+        self.bar.fill(self.offcolor)
+        width, height = self.text.get_size()
+        stripe = pygame.Rect(0, height/2, width, height/4)
+        self.bar.fill(color, stripe)
+        self.ratio = width / 100.0
+
+    def textHollow(self, font, message, fontcolor):
+        base = font.render(message, 0, fontcolor, self.notcolor)
+        size = base.get_width() + 2, base.get_height() + 2
+        img = pygame.Surface(size, 16)
+        img.fill(self.notcolor)
+        base.set_colorkey(0)
+        img.blit(base, (0, 0))
+        img.blit(base, (2, 0))
+        img.blit(base, (0, 2))
+        img.blit(base, (2, 2))
+        base.set_colorkey(0)
+        base.set_palette_at(1, self.notcolor)
+        img.blit(base, (1, 1))
+        img.set_colorkey(self.notcolor)
+        return img
+
+    def render(self, percent=50):
+        surf = pygame.Surface(self.text.get_size())
+        if percent < 100:
+            surf.fill(self.bgcolor)
+            surf.blit(self.bar, (0,0), (0, 0, percent*self.ratio, 100))
+        else:
+            surf.fill(self.color)
+        surf.blit(self.text, (0,0))
+        surf.blit(self.outline, (-1,-1))
+        surf.set_colorkey(self.notcolor)
+        return surf
+
 
 
 
@@ -519,13 +584,17 @@ def show_message(self, message, font_size, location):
     font_surface = self.font.render(message, False, (255, 255, 255))
     if location == "TOP_MIDDLE_TOP":
         x = (SCREENWIDTH - size[0]) / 2
-        y = (SCREENHEIGHT/4) - (size[1])
+        y = (SCREENHEIGHT/4) - 50
+    elif location == "TOP_MIDDLE_TOP2":
+        x = (SCREENWIDTH - size[0]) / 2
+        y = (SCREENHEIGHT/4) - 10
     elif location == "TOP_MIDDLE_CENTER":
         x = (SCREENWIDTH - size[0]) / 2
-        y = (SCREENHEIGHT/4) - 50
+        y = (SCREENHEIGHT/4) + 30
     elif location == "TOP_MIDDLE_BOTTOM":
         x = (SCREENWIDTH - size[0]) / 2
-        y = (SCREENHEIGHT/4) - 50
+        y = (SCREENHEIGHT/4) + 70
+
     elif location == "MIDDLE":
         x = (SCREENWIDTH - size[0]) / 2
         y = (SCREENHEIGHT - size[1]) / 2 
@@ -546,10 +615,10 @@ def show_lives(self, message):
     font_surface = self.font.render(message, False, (255, 255, 255))
     x = 15
     y = 15
-    self.screen.blit(font_surface, (x, y))
+    self.screen.blit(font_surface, ((SCREENWIDTH/2) - 30, y))
     i = 1
     while i < self.lives+1:
-        self.screen.blit(pygame.image.load("images/lives.png"), (i * 50 + 50, y))
+        self.screen.blit(pygame.image.load("images/lives.png"), ((i * 50 + (SCREENWIDTH/2), y)))
         i += 1
 def show_cleanup(self, message):
     self.font = pygame.font.Font(None, 30)

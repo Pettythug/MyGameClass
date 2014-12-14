@@ -15,9 +15,8 @@ def process(self, fish, FPS, total_frames, play_frames):
             sys.exit()
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_RETURN] and self.state == classes.FISH_IN_WATER:
-            self.state = classes.FISH_PLAYING
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
             if self.state == classes.START_SCREEN:
                 if classes.Button.instructions.pressed(pygame.mouse.get_pos()):
                     self.state = classes.INSTRUCTIONS
@@ -28,12 +27,17 @@ def process(self, fish, FPS, total_frames, play_frames):
             elif self.state == classes.INSTRUCTIONS or self.state == classes.CREDITS:
                 if classes.Button.back.pressed(pygame.mouse.get_pos()):
                     self.state = classes.START_SCREEN
-            elif self.state == classes.FISH_GAME_OVER:
+            elif self.state == classes.FISH_IN_WATER:
+                self.play_frames = 0
+                if classes.Button.Button1.pressed(pygame.mouse.get_pos()):
+                    self.state = classes.FISH_PLAYING
+            elif self.state == classes.FISH_GAME_OVER :
                 if classes.Button.Button1.pressed(pygame.mouse.get_pos()):
                     self.state = classes.FISH_PLAYING
                     self.score = 0
                     self.flip_count = 0
                     self.total_frames = 0
+                    self.play_frames = 0
                     self.lives = 3
                     classes.LEVEL = 1
                     self.fish = classes.Fish(0, 520, "images/cartoon-goldfish.png")
