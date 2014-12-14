@@ -31,14 +31,15 @@ def process(self, fish, FPS, total_frames, play_frames):
             elif self.state == classes.FISH_GAME_OVER:
                 if classes.Button.Button1.pressed(pygame.mouse.get_pos()):
                     self.state = classes.FISH_PLAYING
+                    self.score = 0
                     self.flip_count = 0
-                    self.kills = 0
                     self.total_frames = 0
                     self.lives = 3
                     classes.LEVEL = 1
                     self.fish = classes.Fish(0, 520, "images/cartoon-goldfish.png")
         elif keys[pygame.K_RETURN] and self.state == classes.FISH_WON:
             self.state = classes.FISH_PLAYING
+            self.score = 0
             self.flip_count = 0
             self.lives = 3
             self.total_frames = 0
@@ -98,7 +99,7 @@ def process(self, fish, FPS, total_frames, play_frames):
 
 def spawn(self, FPS, total_frames):
     LEVEL = classes.LEVEL
-    if total_frames % (FPS * 2)  == 0:  # spawns a new shark every 8 seconds
+    if total_frames % (FPS * (LEVEL - (LEVEL / 2))) == 0:  # spawns a new shark every 4 seconds
         image_shark = "images/shark2.png"
         img = Image.open(image_shark)
         r = random.randint(1, 3)
@@ -109,7 +110,7 @@ def spawn(self, FPS, total_frames):
             y = 600 / 2 - 150 / 2
         classes.Shark(0, y, image_shark)
 
-    if total_frames % (FPS * 2)  == 0:  # spawns a new jelly every 8 seconds
+    if total_frames % (FPS * (LEVEL - (LEVEL / 2))) == 0:  # spawns a new jelly every 2 seconds
 
         image_bag = "images/jelly.png"
         img = Image.open(image_bag)
@@ -121,7 +122,7 @@ def spawn(self, FPS, total_frames):
         classes.Jellyfish(x, y, image_bag)
 
 
-    if total_frames % (FPS * 2)  == 0:  # spawns a new bag every 8 seconds
+    if total_frames % (FPS * 5)  == 0:  # spawns a new bag every 8 seconds
         r = random.randint(1, 3)
 
         y = 0
@@ -268,14 +269,14 @@ def collisions(self):
                 else: 
                     self.state = classes.FISH_GAME_OVER
 
-        for pellets in classes.Pellet.List:
+        for pellet in classes.Pellet.List:
 
-            col = fish.rect.colliderect(pellets.rect)
+            col = fish.rect.colliderect(pellet.rect)
 
             if col:
-                for num in classes.Pellet.List:
-                    classes.BaseClass.allsprites.remove(num)
-                    classes.Pellet.destroy(num)
+                classes.Fish.pellets += 1
+                classes.BaseClass.allsprites.remove(pellet)
+                classes.Pellet.destroy(pellet)
 
 
 
