@@ -198,6 +198,8 @@ class Fish(BaseClass):
     going_right = True
     freeze = True
     lives = 3
+    pellets = 0
+
 
     def __init__(self, x, y, image_string):
 
@@ -385,7 +387,7 @@ class Pellet(BaseClass):
 
     def __init__(self, x, y, image_string):
 
-        if len(Pellet.List) < (LEVEL * 2):
+        if len(Pellet.List) + Fish.pellets < 2:
             BaseClass.__init__(self, x, y, image_string)
             Pellet.List.add(self)
             self.health = 100
@@ -410,9 +412,11 @@ class Pellet(BaseClass):
     def pellets(self, SCREENWIDTH, SCREENHEIGHT):
         # Keeps the jellies from being dropped outside the screen
         if self.rect.y + self.rect.height > SCREENHEIGHT or self.rect.y < 0:
-            self.vely = -self.vely
+            self.vely = 0
 
-        self.rect.y += self.vely
+        if self.rect.y != SCREENHEIGHT:
+            self.rect.y += self.vely
+
 
     def destroy(self):
         Pellet.List.remove(self)
@@ -460,27 +464,6 @@ class Bag(BaseClass):
         # Shark.normal_list.remove(self)
         del self
 
-class Volcano(BaseClass):
-    image_volcano = "images/underwater_spout.png"
-    img = Image.open(image_volcano)
-
-    List = pygame.sprite.Group()
-
-    def __init__(self, x, y, image_string):
-        img = Image.open(image_string)
-        width, height = img.size
-        BaseClass.__init__(self, x - width, y - height, image_string)
-        Volcano.List.add(self)
-
-
-    def volcano(self, SCREENWIDTH):
-        # Keeps the volcano from being dropped outside the screen
-        if self.rect.x + self.rect.width > SCREENWIDTH or self.rect.x < 0:
-            self.image = pygame.transform.flip(self.image, True, False)
-            self.velx = -self.velx
-
-        self.rect.x += self.velx
-
 
 class FishProjectile(pygame.sprite.Sprite):
     List = pygame.sprite.Group()
@@ -516,6 +499,7 @@ class FishProjectile(pygame.sprite.Sprite):
         FishProjectile.normal_list.append(self)
         FishProjectile.List.add(self)
         self.velx = None
+        Fish.pellets -= 1
 
     @staticmethod
     def movement():

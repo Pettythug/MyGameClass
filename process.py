@@ -70,7 +70,7 @@ def process(self, fish, FPS, total_frames):
                     else:
                         p.image = pygame.transform.flip(p.image, True, False)  # flips the image when shooting the other direction
                         p.velx = -8
-                if classes.Pellet.List > 0:
+                if classes.Fish.pellets > 0:
                     if classes.Fish.going_right:
                         r = random.randint(0,4)
                         if r == 1:
@@ -282,14 +282,14 @@ def collisions(self):
                 else: 
                     self.state = classes.FISH_GAME_OVER
 
-        for pellets in classes.Pellet.List:
+        for pellet in classes.Pellet.List:
 
-            col = fish.rect.colliderect(pellets.rect)
+            col = fish.rect.colliderect(pellet.rect)
 
             if col:
-                for num in classes.Pellet.List:
-                    classes.BaseClass.allsprites.remove(num)
-                    classes.Pellet.destroy(num)
+                classes.Fish.pellets += 1
+                classes.BaseClass.allsprites.remove(pellet)
+                classes.Pellet.destroy(pellet)
 
 
 
