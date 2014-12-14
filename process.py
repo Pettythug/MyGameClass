@@ -35,6 +35,7 @@ def process(self, fish, FPS, total_frames):
                     self.flip_count = 0
                     self.total_frames = 0
                     self.lives = 3
+                    classes.LEVEL = 1
                     self.fish = classes.Fish(0, 520, "images/cartoon-goldfish.png")
         elif keys[pygame.K_RETURN] and self.state == classes.FISH_WON:
             self.state = classes.FISH_PLAYING
@@ -111,7 +112,7 @@ def process(self, fish, FPS, total_frames):
 
 def spawn(self, FPS, total_frames):
     LEVEL = classes.LEVEL
-    if total_frames % (6 -(LEVEL/2)) == 0:  # spawns a new shark every 4 seconds
+    if total_frames % (FPS * (LEVEL - (LEVEL / 2))) == 0:  # spawns a new shark every 4 seconds
         image_shark = "images/shark2.png"
         img = Image.open(image_shark)
         r = random.randint(1, 3)
@@ -122,7 +123,7 @@ def spawn(self, FPS, total_frames):
             y = 600 / 2 - 150 / 2
         classes.Shark(0, y, image_shark)
 
-    if total_frames % (15 - LEVEL) == 0:  # spawns a new jelly every 2 seconds
+    if total_frames % (FPS * (LEVEL - (LEVEL / 2))) == 0:  # spawns a new jelly every 2 seconds
 
         image_bag = "images/jelly.png"
         img = Image.open(image_bag)
@@ -134,7 +135,7 @@ def spawn(self, FPS, total_frames):
         classes.Jellyfish(x, y, image_bag)
 
 
-    if total_frames % ((11 - LEVEL) *.1) == 0:  # spawns a new bag every 8 seconds
+    if total_frames % (FPS * 5)  == 0:  # spawns a new bag every 8 seconds
         r = random.randint(1, 3)
 
         y = 0
@@ -278,7 +279,8 @@ def collisions(self):
                 elif self.lives == 1 or self.lives == 2:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
-                else : self.state = classes.FISH_GAME_OVER
+                else: 
+                    self.state = classes.FISH_GAME_OVER
 
         for pellets in classes.Pellet.List:
 
@@ -313,8 +315,10 @@ def projectile_collisions(self):
                 classes.BaseClass.allsprites.remove(enemies)
                 classes.Bag.destroy(enemies)
                 self.kills += 1
-                if (self.kills / 2 ) >= classes.LEVEL:
+                if self.kills > classes.LEVEL + 2:
                     classes.LEVEL += 1
+                    self.kills = 0
+
 
 
             projectile.rect.x = 2 * -projectile.rect.width

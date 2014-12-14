@@ -69,9 +69,10 @@ class Game:
                 self.score += 1
 
                 # print self.score
-                show_score(self, "%s" % ((LEVEL * 2) - self.kills))
+                show_cleanup(self, "%s" % ((LEVEL) - self.kills + 3))
+                show_cleanup_left(self, "Cleanups to Next Level")
                 show_level(self, "%s" % (LEVEL))
-                show_score_text(self, "Kills to next level: ")
+                show_lives(self, "Lives: ")
                 show_level_text(self, "LEVEL: ")
 
             elif self.state == FISH_IN_WATER:
@@ -87,7 +88,7 @@ class Game:
             elif self.state == FISH_GAME_OVER:
                 show_message(self, "GAME OVER. Your score is %s" % (self.score/30), 30, "MIDDLE")
                 Button.Button1.update_display(self.screen, (107,142,35), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Try Again?", (255,255,255))
-            
+
             elif self.state == CREDITS:
                 show_message(self, "Team Ant Informatics 125" , 30,  "TOP_MIDDLE_CENTER")
                 Button.back.update_display(self.screen, (102,205,170), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Back", (255,255,255))
@@ -554,7 +555,7 @@ def show_message(self, message, font_size, location):
         y = (SCREENHEIGHT - size[1] ) / 2 
     self.screen.blit(font_surface, (x, y))
 
-def show_score_text(self, message):
+def show_lives(self, message):
     self.font = pygame.font.Font(None, 30)
     size = self.font.size(message)
     font_surface = self.font.render(message, False, (255, 255, 255))
@@ -563,22 +564,30 @@ def show_score_text(self, message):
     self.screen.blit(font_surface, (x, y))
     i = 1
     while i < self.lives+1:
-        self.screen.blit(pygame.image.load("images/lives.png"), (i * 50 + 100, y))
+        self.screen.blit(pygame.image.load("images/lives.png"), (i * 50 + 50, y))
         i += 1
-def show_score(self, message):
-    self.font = pygame.font.Font(None, 50)
+def show_cleanup(self, message):
+    self.font = pygame.font.Font(None, 30)
     size = self.font.size(message)
     font_surface = self.font.render(message, False, (255, 255, 255))
     x = 15
     y = 15
-    self.screen.blit(font_surface, (x, y+30))
+    self.screen.blit(font_surface, ((SCREENWIDTH / 2)+30, y+30))
+
+def show_cleanup_left(self, message):
+    self.font = pygame.font.Font(None, 20)
+    size = self.font.size(message)
+    font_surface = self.font.render(message, False, (255, 255, 255))
+    x = 15
+    y = 15
+    self.screen.blit(font_surface, ((SCREENWIDTH/2) - 30, y))
 
 def show_level(self, message):
     self.font = pygame.font.Font(None, 50)
     size = self.font.size(message)
     font_surface = self.font.render(message, False, (255, 255, 255))
     y = 15
-    self.screen.blit(font_surface, (SCREENWIDTH - 100, y+30))
+    self.screen.blit(font_surface, (SCREENWIDTH - 100, y + 30))
 def show_level_text(self, message):
     self.font = pygame.font.Font(None, 30)
     size = self.font.size(message)
