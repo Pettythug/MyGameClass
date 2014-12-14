@@ -7,6 +7,8 @@ global PELLETS
 
 def process(self, fish, FPS, total_frames):
     # PROCESSING
+
+                   
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -15,21 +17,32 @@ def process(self, fish, FPS, total_frames):
 
         if keys[pygame.K_RETURN] and self.state == classes.FISH_IN_WATER:
             self.state = classes.FISH_PLAYING
-        elif keys[pygame.K_RETURN] and self.state == classes.FISH_GAME_OVER:
-            self.state = classes.FISH_PLAYING
-            self.score = 0
-            self.flip_count = 0
-            self.total_frames = 0
-            self.lives = 3
-            self.state = classes.FISH_IN_WATER
-            self.fish = classes.Fish(0, 520, "images/cartoon-goldfish.png")
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if self.state == classes.START_SCREEN:
+                if classes.Button.instructions.pressed(pygame.mouse.get_pos()):
+                    self.state = classes.INSTRUCTIONS
+                elif classes.Button.credits.pressed(pygame.mouse.get_pos()):
+                    self.state = classes.CREDITS
+                elif classes.Button.Button1.pressed(pygame.mouse.get_pos()):
+                    self.state = classes.FISH_PLAYING
+            elif self.state == classes.INSTRUCTIONS or self.state == classes.CREDITS:
+                if classes.Button.back.pressed(pygame.mouse.get_pos()):
+                    self.state = classes.START_SCREEN
+            elif self.state == classes.FISH_GAME_OVER:
+                if classes.Button.Button1.pressed(pygame.mouse.get_pos()):
+                    self.state = classes.FISH_PLAYING
+                    self.score = 0
+                    self.flip_count = 0
+                    self.total_frames = 0
+                    self.lives = 3
+                    classes.LEVEL = 1
+                    self.fish = classes.Fish(0, 520, "images/cartoon-goldfish.png")
         elif keys[pygame.K_RETURN] and self.state == classes.FISH_WON:
             self.state = classes.FISH_PLAYING
             self.score = 0
             self.flip_count = 0
             self.lives = 3
             self.total_frames = 0
-            self.state = classes.FISH_IN_WATER
 
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             classes.Fish.going_right = True
@@ -49,46 +62,47 @@ def process(self, fish, FPS, total_frames):
         else:
             fish.vely = 0
 
-        if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[1] or pygame.mouse.get_pressed()[2]:
-            def direction():
-                if classes.Fish.going_right:
-                    p.velx = 8
-                else:
-                    p.image = pygame.transform.flip(p.image, True, False)  # flips the image when shooting the other direction
-                    p.velx = -8
-            if classes.Pellet.List > 0:
-                if classes.Fish.going_right:
-                    r = random.randint(0,4)
-                    if r == 1:
-                        pebble_img = "images/pebble1.png"
-                    elif r == 2:
-                        pebble_img = "images/pebble2.png"
-                    elif r == 3:
-                        pebble_img = "images/pebble3.png"
-                    elif r== 4:
-                        pebble_img = "images/pebble4.png"
+        if self.state == classes.FISH_PLAYING:
+            if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[1] or pygame.mouse.get_pressed()[2]:
+                def direction():
+                    if classes.Fish.going_right:
+                        p.velx = 8
                     else:
-                        pebble_img = "images/pebble.png"
-                    p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
-                    direction()
-                else:
-                    r = random.randint(0,4)
-                    if r == 1:
-                        pebble_img = "images/pebble1.png"
-                    elif r == 2:
-                        pebble_img = "images/pebble2.png"
-                    elif r == 3:
-                        pebble_img = "images/pebble3.png"
-                    elif r== 4:
-                        pebble_img = "images/pebble4.png"
+                        p.image = pygame.transform.flip(p.image, True, False)  # flips the image when shooting the other direction
+                        p.velx = -8
+                if classes.Pellet.List > 0:
+                    if classes.Fish.going_right:
+                        r = random.randint(0,4)
+                        if r == 1:
+                            pebble_img = "images/pebble1.png"
+                        elif r == 2:
+                            pebble_img = "images/pebble2.png"
+                        elif r == 3:
+                            pebble_img = "images/pebble3.png"
+                        elif r== 4:
+                            pebble_img = "images/pebble4.png"
+                        else:
+                            pebble_img = "images/pebble.png"
+                        p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
+                        direction()
                     else:
-                        pebble_img = "images/pebble.png"
-                    p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
-                    direction()
-            else: 
-                pass
-            pygame.mixer.music.load('music/fire.ogg')
-            pygame.mixer.music.play(0)
+                        r = random.randint(0,4)
+                        if r == 1:
+                            pebble_img = "images/pebble1.png"
+                        elif r == 2:
+                            pebble_img = "images/pebble2.png"
+                        elif r == 3:
+                            pebble_img = "images/pebble3.png"
+                        elif r== 4:
+                            pebble_img = "images/pebble4.png"
+                        else:
+                            pebble_img = "images/pebble.png"
+                        p = classes.FishProjectile(fish.rect.x, fish.rect.y, classes.Fish.going_right, pebble_img)
+                        direction()
+                else: 
+                    pass
+                pygame.mixer.music.load('music/fire.ogg')
+                pygame.mixer.music.play(0)
 
     # spawn(self, FPS, total_frames)
     # collisions(self)
@@ -97,7 +111,8 @@ def process(self, fish, FPS, total_frames):
 
 
 def spawn(self, FPS, total_frames):
-    if total_frames % (FPS * 5) == 0:  # spawns a new shark every 4 seconds
+    LEVEL = classes.LEVEL
+    if total_frames % (FPS * (LEVEL - (LEVEL / 2))) == 0:  # spawns a new shark every 4 seconds
         image_shark = "images/shark2.png"
         img = Image.open(image_shark)
         r = random.randint(1, 3)
@@ -108,7 +123,7 @@ def spawn(self, FPS, total_frames):
             y = 600 / 2 - 150 / 2
         classes.Shark(0, y, image_shark)
 
-    if total_frames % (FPS * 2.5) == 0:  # spawns a new jelly every 2 seconds
+    if total_frames % (FPS * (LEVEL - (LEVEL / 2))) == 0:  # spawns a new jelly every 2 seconds
 
         image_bag = "images/jelly.png"
         img = Image.open(image_bag)
@@ -120,7 +135,7 @@ def spawn(self, FPS, total_frames):
         classes.Jellyfish(x, y, image_bag)
 
 
-    if total_frames % (FPS * 7.5)  == 0:  # spawns a new bag every 8 seconds
+    if total_frames % (FPS * 5)  == 0:  # spawns a new bag every 8 seconds
         r = random.randint(1, 3)
 
         y = 0
@@ -195,7 +210,9 @@ def collisions(self):
                 classes.Fish.destroy(fish)
 
 
-                if self.lives > 0:
+                if self.lives == 3:
+                     x = 0
+                elif self.lives > 0:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
                 else : self.state = classes.FISH_GAME_OVER
@@ -225,7 +242,9 @@ def collisions(self):
                         classes.Pellet.destroy(num)
                 classes.Fish.destroy(fish)
 
-                if self.lives > 0:
+                if self.lives == 3:
+                     x = 0
+                elif self.lives > 0:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
                 else : self.state = classes.FISH_GAME_OVER
@@ -255,11 +274,14 @@ def collisions(self):
                         classes.Pellet.destroy(num)
                 classes.Fish.destroy(fish)
 
-                if self.lives > 0:
+                if self.lives == 3:
+                    self.lives == 3
+                elif self.lives == 1 or self.lives == 2:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
-                else : self.state = classes.FISH_GAME_OVER
-        
+                else: 
+                    self.state = classes.FISH_GAME_OVER
+
         for pellets in classes.Pellet.List:
 
             col = fish.rect.colliderect(pellets.rect)
@@ -292,6 +314,12 @@ def projectile_collisions(self):
                 # self.screen.blit(font_surface, (enemies.rect.x, enemies.rect.y))
                 classes.BaseClass.allsprites.remove(enemies)
                 classes.Bag.destroy(enemies)
+                self.kills += 1
+                if self.kills > classes.LEVEL + 2:
+                    classes.LEVEL += 1
+                    self.kills = 0
+
+
 
             projectile.rect.x = 2 * -projectile.rect.width
             projectile.destroy()

@@ -10,6 +10,11 @@ FISH_IN_WATER = 0
 FISH_PLAYING = 1
 FISH_WON = 2
 FISH_GAME_OVER = 3
+CREDITS = 4
+INSTRUCTIONS = 5
+START_SCREEN = 6
+LEVEL = 1
+
 previous_x = [0]
 previous_y = 0
 
@@ -23,7 +28,7 @@ class Game:
         self.FPS = 24  # Frames Per Second
         self.total_frames = 0
         self.background = pygame.image.load("images/background.jpg")
-        self.fish = Fish(0, SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
+        self.fish = Fish(SCREENWIDTH - 180, SCREENHEIGHT - 500, "images/cartoon-goldfish.png")
         # self.volcano = Volcano(SCREENWIDTH, SCREENHEIGHT, "images/underwater_spout.png")
 
         self.init_game()
@@ -32,9 +37,14 @@ class Game:
 
     def init_game(self):
         self.lives = 3
+        self.kills = 0
         self.score = 0
-        self.state = FISH_IN_WATER
+        self.state = START_SCREEN
         self.flip_count = 0
+        Button.Button1 = Button()
+        Button.back = Button()
+        Button.credits = Button()
+        Button.instructions = Button()
 
 
     def run(self):
@@ -43,7 +53,6 @@ class Game:
             process(self, self.fish, self.FPS, self.total_frames)
             self.screen.blit(self.background, (0, 0))
             position = pygame.mouse.get_pos()
-
 
             if self.state == FISH_PLAYING:
                 self.fish.motion(self.fish, SCREENWIDTH, SCREENHEIGHT)
@@ -60,15 +69,38 @@ class Game:
                 self.score += 1
 
                 # print self.score
-                show_score(self, "%s" % (self.score/30))
+                show_cleanup(self, "%s" % ((LEVEL) - self.kills + 3))
+                show_cleanup_left(self, "Cleanups to Next Level")
+                show_level(self, "%s" % (LEVEL))
+                show_lives(self, "Lives: ")
+                show_level_text(self, "LEVEL: ")
 
+            elif self.state == FISH_IN_WATER:
+                show_message(self, "PRESS Enter TO START", 30, "MIDDLE")
 
-            if self.state == FISH_IN_WATER:
-                show_message(self, "PRESS Enter TO START")
-            if self.state == FISH_GAME_OVER:
-                show_message(self, "GAME OVER. Your score is %s" % (self.score/30))
-            if self.state == FISH_WON:
-                show_message(self, "YOU WON! PRESS ENTER TO PLAY AGAIN")
+            elif self.state == START_SCREEN:
+                show_message(self, "KOI", 200, "TOP_MIDDLE_CENTER")
+                
+                Button.Button1.update_display(self.screen, (107,142,35), (SCREENWIDTH - 300) / 2, (SCREENHEIGHT) / 2 , 300,    75,    0,        "Start Game", (255,255,255))
+                Button.instructions.update_display(self.screen, (100,149,237), (SCREENWIDTH - 450) / 2, (SCREENHEIGHT + 450) / 2, 200,    50,    0,        "Tutorial", (255,255,255))
+                Button.credits.update_display(self.screen, (100,149,237), (SCREENWIDTH + 50) / 2, (SCREENHEIGHT + 450) / 2 , 200,    50,    0,        "Credits", (255,255,255))
+
+            elif self.state == FISH_GAME_OVER:
+                show_message(self, "GAME OVER. Your score is %s" % (self.score/30), 30, "MIDDLE")
+                Button.Button1.update_display(self.screen, (107,142,35), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Try Again?", (255,255,255))
+
+            elif self.state == CREDITS:
+                show_message(self, "Team Ant Informatics 125" , 30,  "TOP_MIDDLE_CENTER")
+                Button.back.update_display(self.screen, (102,205,170), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Back", (255,255,255))
+
+            elif self.state == INSTRUCTIONS:
+                show_message(self, "Destroy the Trash and avoid the Animals", 30,"TOP_MIDDLE_TOP")
+                show_message(self, "Pick up Pebbles to shoot the trash", 30,"TOP_MIDDLE_CENTER")
+                show_message(self, "You have 3 Lives", 30,"TOP_MIDDLE_BOTTOM")
+                Button.back.update_display(self.screen, (102,205,170), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Back", (255,255,255))
+
+            elif LEVEL == 10:
+                show_message(self, "YOU WON! PRESS ENTER TO PLAY AGAIN", 30, "BOTTOM_MIDDLE")
             # LOGIC
             # Logic is movement, functions, etc
 
@@ -84,6 +116,8 @@ class Game:
             #DRAW
 
             self.clock.tick(self.FPS)
+
+
 
 class BaseClass(pygame.sprite.Sprite):
     allsprites = pygame.sprite.Group()
@@ -106,6 +140,57 @@ class BaseClass(pygame.sprite.Sprite):
         ClassName.List.remove(self)
         BaseClass.allsprites.remove(self)
         del self
+
+
+
+class Button(BaseClass):
+    def __init__(self):
+        this = 1
+
+    #Update the display and show the button
+    def update_display(self, surface, color, x, y, length, height, width, text, text_color):
+        #Parameters:               surface,      color,       x,   y,   length, height, width,    text,      text_color
+        self.create_button(surface, color, x, y, length, height, width, text, text_color)
+
+
+
+    def create_button(self, surface, color, x, y, length, height, width, text, text_color):
+        surface = self.draw_button(surface, color, length, height, x, y, width)
+        surface = self.write_text(surface, text, text_color, length, height, x, y)
+        self.rect = pygame.Rect(x,y, length, height)
+        return surface
+
+    def write_text(self, surface, text, text_color, length, height, x, y):
+        font_size = int(length//len(text))
+        myFont = pygame.font.SysFont("Calibri", font_size)
+        myText = myFont.render(text, 1, text_color)
+        surface.blit(myText, ((x+length/2) - myText.get_width()/2, (y+height/2) - myText.get_height()/2))
+        return surface
+
+    def draw_button(self, surface, color, length, height, x, y, width):           
+        for i in range(1,10):
+            s = pygame.Surface((length+(i*2),height+(i*2)))
+            s.fill(color)
+            alpha = (255/(i+2))
+            if alpha <= 0:
+                alpha = 1
+            s.set_alpha(alpha)
+            pygame.draw.rect(s, color, (x-i,y-i,length+i,height+i), width)
+            surface.blit(s, (x-i,y-i))
+        pygame.draw.rect(surface, color, (x,y,length,height), 0)
+        pygame.draw.rect(surface, (190,190,190), (x,y,length,height), 1)  
+        return surface
+
+    def pressed(self, mouse):
+        if mouse[0] > self.rect.topleft[0]:
+            if mouse[1] > self.rect.topleft[1]:
+                if mouse[0] < self.rect.bottomright[0]:
+                    if mouse[1] < self.rect.bottomright[1]:
+                        return True
+                    else: return False
+                else: return False
+            else: return False
+        else: return False
 
 
 class Fish(BaseClass):
@@ -188,7 +273,7 @@ class Shark(BaseClass):
 
     def __init__(self, x, y, image_string):
 
-        if len(Shark.List) < 3:
+        if len(Shark.List) < (LEVEL/2) - 1:
             BaseClass.__init__(self, x, y, image_string)
             Shark.List.add(self)
             self.health = 100
@@ -235,10 +320,10 @@ class Shark(BaseClass):
 
 class Jellyfish(BaseClass):
     List = pygame.sprite.Group()
-
+    
     def __init__(self, x, y, image_string):
 
-        if len(Jellyfish.List) < 8:
+        if len(Jellyfish.List) < (LEVEL*.5):
             BaseClass.__init__(self, x, y, image_string)
             Jellyfish.List.add(self)
             self.health = 100
@@ -300,7 +385,7 @@ class Pellet(BaseClass):
 
     def __init__(self, x, y, image_string):
 
-        if len(Pellet.List) < 4:
+        if len(Pellet.List) < (LEVEL * 2):
             BaseClass.__init__(self, x, y, image_string)
             Pellet.List.add(self)
             self.health = 100
@@ -340,7 +425,7 @@ class Bag(BaseClass):
 
     def __init__(self, x, y, image_string):
 
-        if len(Bag.List) < 4:
+        if len(Bag.List) < 3:
             BaseClass.__init__(self, x, y, image_string)
             Bag.List.add(self)
             self.health = 100
@@ -443,16 +528,35 @@ class FishProjectile(pygame.sprite.Sprite):
         del self
 
 
-def show_message(self, message):
-    self.font = pygame.font.Font(None, 30)
+def show_message(self, message, font_size, location):
+    self.font = pygame.font.Font(None, font_size)
     size = self.font.size(message)
     font_surface = self.font.render(message, False, (255, 255, 255))
-    x = (SCREENWIDTH - size[0]) / 2
-    y = (SCREENHEIGHT - size[1]) / 2
+    if location == "TOP_MIDDLE_TOP":
+        x = (SCREENWIDTH - size[0]) / 2
+        y = (SCREENHEIGHT/4) - (size[1] * 5)
+    elif location == "TOP_MIDDLE_CENTER":
+        x = (SCREENWIDTH - size[0]) / 2
+        y = (SCREENHEIGHT/4) - size[1]
+    elif location == "TOP_MIDDLE_BOTTOM":
+        x = (SCREENWIDTH - size[0]) / 2
+        y = (SCREENHEIGHT/4) - 50
+    elif location == "MIDDLE":
+        x = (SCREENWIDTH - size[0]) / 2
+        y = (SCREENHEIGHT - size[1]) / 2 
+    elif location == "BOTTOM_MIDDLE":
+        x = (SCREENWIDTH - size[0]) / 2
+        y = (SCREENHEIGHT - (size[1] * 2))
+    elif location == "BOTTOM_LEFT":
+        x = (SCREENWIDTH - size[0]) / 3
+        y = (SCREENHEIGHT - size[1] ) / 2 
+    elif location == "BOTTOM_RIGHT":
+        x = (SCREENWIDTH - size[0])
+        y = (SCREENHEIGHT - size[1] ) / 2 
     self.screen.blit(font_surface, (x, y))
 
-def show_score(self, message):
-    self.font = pygame.font.Font(None, 100)
+def show_lives(self, message):
+    self.font = pygame.font.Font(None, 30)
     size = self.font.size(message)
     font_surface = self.font.render(message, False, (255, 255, 255))
     x = 15
@@ -460,16 +564,34 @@ def show_score(self, message):
     self.screen.blit(font_surface, (x, y))
     i = 1
     while i < self.lives+1:
-        self.screen.blit(pygame.image.load("images/lives.png"), (i * 50 + 100, y))
+        self.screen.blit(pygame.image.load("images/lives.png"), (i * 50 + 50, y))
         i += 1
+def show_cleanup(self, message):
+    self.font = pygame.font.Font(None, 30)
+    size = self.font.size(message)
+    font_surface = self.font.render(message, False, (255, 255, 255))
+    x = 15
+    y = 15
+    self.screen.blit(font_surface, ((SCREENWIDTH / 2)+30, y+30))
 
+def show_cleanup_left(self, message):
+    self.font = pygame.font.Font(None, 20)
+    size = self.font.size(message)
+    font_surface = self.font.render(message, False, (255, 255, 255))
+    x = 15
+    y = 15
+    self.screen.blit(font_surface, ((SCREENWIDTH/2) - 30, y))
 
-
-
-
-
-
-
-
-
+def show_level(self, message):
+    self.font = pygame.font.Font(None, 50)
+    size = self.font.size(message)
+    font_surface = self.font.render(message, False, (255, 255, 255))
+    y = 15
+    self.screen.blit(font_surface, (SCREENWIDTH - 100, y + 30))
+def show_level_text(self, message):
+    self.font = pygame.font.Font(None, 30)
+    size = self.font.size(message)
+    font_surface = self.font.render(message, False, (255, 255, 255))
+    y = 15
+    self.screen.blit(font_surface, (SCREENWIDTH - 100, y))
 
