@@ -62,7 +62,7 @@ def process(self, fish, FPS, total_frames):
         else:
             fish.vely = 0
 
-        if self.state == classes.FISH_PLAYING:
+        if self.state == classes.FISH_PLAYING and total_frames > 20:
             if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[1] or pygame.mouse.get_pressed()[2]:
                 def direction():
                     if classes.Fish.going_right:

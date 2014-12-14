@@ -534,10 +534,10 @@ def show_message(self, message, font_size, location):
     font_surface = self.font.render(message, False, (255, 255, 255))
     if location == "TOP_MIDDLE_TOP":
         x = (SCREENWIDTH - size[0]) / 2
-        y = (SCREENHEIGHT/4) - (size[1] * 5)
+        y = (SCREENHEIGHT/4) - (size[1])
     elif location == "TOP_MIDDLE_CENTER":
         x = (SCREENWIDTH - size[0]) / 2
-        y = (SCREENHEIGHT/4) - size[1]
+        y = (SCREENHEIGHT/4) - 50
     elif location == "TOP_MIDDLE_BOTTOM":
         x = (SCREENWIDTH - size[0]) / 2
         y = (SCREENHEIGHT/4) - 50
