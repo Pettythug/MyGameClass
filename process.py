@@ -62,6 +62,7 @@ def process(self, fish, FPS, total_frames, play_frames):
             fish.vely = 0
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         if self.state == classes.FISH_PLAYING and total_frames > 20:
             if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[1] or pygame.mouse.get_pressed()[2]:
                 def direction():
@@ -82,6 +83,8 @@ def process(self, fish, FPS, total_frames, play_frames):
                         elif r== 4:
                             pebble_img = "images/pebble4.png"
 =======
+=======
+>>>>>>> fixups
         if self.state == classes.FISH_PLAYING:
             self.play_frames +=1
             if self.play_frames > 3: # so that clicking the start button doesn't also fire a pebble
@@ -89,6 +92,9 @@ def process(self, fish, FPS, total_frames, play_frames):
                     def direction():
                         if classes.Fish.going_right:
                             p.velx = 8
+<<<<<<< HEAD
+>>>>>>> fixups
+=======
 >>>>>>> fixups
                         else:
                             p.image = pygame.transform.flip(p.image, True, False)  # flips the image when shooting the other direction

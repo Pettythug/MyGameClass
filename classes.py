@@ -390,7 +390,11 @@ class Pellet(BaseClass):
     def __init__(self, x, y, image_string):
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         if len(Pellet.List) + Fish.pellets < 2:
+=======
+        if len(Pellet.List) < 3:
+>>>>>>> fixups
 =======
         if len(Pellet.List) < 3:
 >>>>>>> fixups
