@@ -108,7 +108,11 @@ class Game:
                 Button.Button1.update_display(self.screen, (230,52,35), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Try Again?", (255,255,255))
 
             elif self.state == CREDITS:
-                show_message(self, "Team Ant Informatics 125" , 30,  "TOP_MIDDLE_CENTER")
+                show_message(self, "Team Ant Informatics 125" , 40,  "TOP_MIDDLE_CENTER")
+                show_names(self, "Ian McNicol", 30, 225)
+                show_names(self, "Delian Petrov", 30, 250)
+                show_names(self, "Christina Ryder", 30, 275)
+                show_names(self, "Brian Wance", 30, 300)
                 Button.back.update_display(self.screen, (102,205,170), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Back", (255,255,255))
 
             elif self.state == INSTRUCTIONS:
@@ -577,6 +581,11 @@ class FishProjectile(pygame.sprite.Sprite):
         FishProjectile.normal_list.remove(self)
         del self
 
+def show_names(self, message, font_size, y):
+    self.font = pygame.font.Font(None, font_size)
+    size = self.font.size(message)
+    font_surface = self.font.render(message, False, (255, 255, 255))
+    self.screen.blit(font_surface, ((SCREENWIDTH - size[0]) / 2, y))
 
 def show_message(self, message, font_size, location):
     self.font = pygame.font.Font(None, font_size)
