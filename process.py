@@ -27,9 +27,9 @@ def process(self, fish, FPS, total_frames, play_frames):
                     pygame.mixer.music.load('music/blop.ogg')
                     pygame.mixer.music.play(0)
                 elif classes.Button.Button1.pressed(pygame.mouse.get_pos()):
-                    self.state = classes.FISH_PLAYING
                     pygame.mixer.music.load('music/bubbles.ogg')
                     pygame.mixer.music.play(0)
+                    self.state = classes.FISH_PLAYING
             elif self.state == classes.INSTRUCTIONS or self.state == classes.CREDITS:
                 if classes.Button.back.pressed(pygame.mouse.get_pos()):
                     self.state = classes.START_SCREEN
