@@ -64,7 +64,7 @@ class Game:
                     self.background = pygame.image.load("images/Level3-5.jpg")
                 elif LEVEL >= 5 and LEVEL <= 9:
                     self.background = pygame.image.load("images/Level5-9.jpg")
-                elif LEVEL ==10:
+                elif LEVEL == 10:
                     self.background = pygame.image.load("images/Level10.jpg")
 
                 self.fish.motion(self.fish, SCREENWIDTH, SCREENHEIGHT)
@@ -106,6 +106,7 @@ class Game:
             elif self.state == FISH_GAME_OVER:
                 show_message(self, "GAME OVER",50, "MIDDLE")
                 Button.Button1.update_display(self.screen, (230,52,35), (SCREENWIDTH - 200) / 2, (SCREENHEIGHT + 100) / 2 , 200,    50,    0,        "Try Again?", (255,255,255))
+                self.background = pygame.image.load("images/background.jpg")
 
             elif self.state == CREDITS:
                 show_message(self, "Team Ant Informatics 125" , 40,  "TOP_MIDDLE_CENTER")

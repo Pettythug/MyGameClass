@@ -20,19 +20,31 @@ def process(self, fish, FPS, total_frames, play_frames):
             if self.state == classes.START_SCREEN:
                 if classes.Button.instructions.pressed(pygame.mouse.get_pos()):
                     self.state = classes.INSTRUCTIONS
+                    pygame.mixer.music.load('music/blop.ogg')
+                    pygame.mixer.music.play(0)
                 elif classes.Button.credits.pressed(pygame.mouse.get_pos()):
                     self.state = classes.CREDITS
+                    pygame.mixer.music.load('music/blop.ogg')
+                    pygame.mixer.music.play(0)
                 elif classes.Button.Button1.pressed(pygame.mouse.get_pos()):
                     self.state = classes.FISH_PLAYING
+                    pygame.mixer.music.load('music/bubbles.ogg')
+                    pygame.mixer.music.play(0)
             elif self.state == classes.INSTRUCTIONS or self.state == classes.CREDITS:
                 if classes.Button.back.pressed(pygame.mouse.get_pos()):
                     self.state = classes.START_SCREEN
+                    pygame.mixer.music.load('music/blop.ogg')
+                    pygame.mixer.music.play(0)
             elif self.state == classes.FISH_IN_WATER:
                 self.play_frames = 0
                 if classes.Button.Button1.pressed(pygame.mouse.get_pos()):
                     self.state = classes.FISH_PLAYING
+                    pygame.mixer.music.load('music/blop.ogg')
+                    pygame.mixer.music.play(0)
             elif self.state == classes.FISH_GAME_OVER :
                 if classes.Button.Button1.pressed(pygame.mouse.get_pos()):
+                    pygame.mixer.music.load('music/bubbles.ogg')
+                    pygame.mixer.music.play(0)
                     self.state = classes.FISH_PLAYING
                     self.score = 0
                     self.flip_count = 0
@@ -180,7 +192,7 @@ def collisions(self):
             col = fish.rect.colliderect(sharks.rect)
 
             if col:
-                pygame.mixer.music.load('music/buzzer.ogg')
+                pygame.mixer.music.load('music/slap.ogg')
                 pygame.mixer.music.play(0)
                 self.lives -= 1
                 classes.Fish.remove(fish)
@@ -206,14 +218,17 @@ def collisions(self):
                 elif self.lives > 0:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
-                else : self.state = classes.FISH_GAME_OVER
+                else : 
+                    self.state = classes.FISH_GAME_OVER
+                    pygame.mixer.music.load('music/end.ogg')
+                    pygame.mixer.music.play(0)
 
         for jellyfishes in classes.Jellyfish.List:
 
             col = fish.rect.colliderect(jellyfishes.rect)
 
             if col:
-                pygame.mixer.music.load('music/buzzer.ogg')
+                pygame.mixer.music.load('music/slap.ogg')
                 pygame.mixer.music.play(0)
                 self.lives -= 1
                 classes.Fish.remove(fish)
@@ -238,14 +253,17 @@ def collisions(self):
                 elif self.lives > 0:
                     self.fish = classes.Fish(0, classes.SCREENHEIGHT - 80, "images/cartoon-goldfish.png")
                     self.state = classes.FISH_IN_WATER
-                else : self.state = classes.FISH_GAME_OVER
+                else : 
+                    self.state = classes.FISH_GAME_OVER
+                    pygame.mixer.music.load('music/end.ogg')
+                    pygame.mixer.music.play(0)
 
         for bags in classes.Bag.List:
 
             col = fish.rect.colliderect(bags.rect)
 
             if col:
-                pygame.mixer.music.load('music/buzzer.ogg')
+                pygame.mixer.music.load('music/slap.ogg')
                 pygame.mixer.music.play(0)
                 self.lives -= 1
                 classes.Fish.remove(fish)
@@ -272,6 +290,8 @@ def collisions(self):
                     self.state = classes.FISH_IN_WATER
                 else: 
                     self.state = classes.FISH_GAME_OVER
+                    pygame.mixer.music.load('music/end.ogg')
+                    pygame.mixer.music.play(0)
 
         for pellet in classes.Pellet.List:
 
@@ -306,7 +326,7 @@ def projectile_collisions(self):
                 classes.BaseClass.allsprites.remove(enemies)
                 classes.Bag.destroy(enemies)
                 self.kills += 1
-                if self.kills > classes.LEVEL + 2:
+                if self.kills > classes.LEVEL + 1:
                     classes.LEVEL += 1
                     self.kills = 0
 
